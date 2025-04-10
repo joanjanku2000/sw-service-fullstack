@@ -22,3 +22,10 @@ run ``docker compose build app`` to rebuild the project using maven so that all 
 artifacts are packed.
 
 Stop the containers:   ``docker compose down``
+
+TO run the application outside the container through IntellIJ
+run only mongo in docker using ``docker compose up mongo_db -d``
+
+The applications default profile is local and will use the pre-configured
+mongodb uri matching the host and port to access mongo outside
+docker
