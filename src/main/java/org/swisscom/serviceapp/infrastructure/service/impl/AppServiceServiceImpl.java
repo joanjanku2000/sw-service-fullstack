@@ -1,7 +1,6 @@
 package org.swisscom.serviceapp.infrastructure.service.impl;
 
 
-import org.apache.logging.log4j.simple.SimpleLoggerContextFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CachePut;
@@ -27,7 +26,7 @@ public class AppServiceServiceImpl implements AppServiceService {
         this.serviceRepository = serviceRepository;
     }
 
-    @CachePut(cacheNames = "app-service",key = "#appServiceDTO.id()")
+    @CachePut(cacheNames = "app-service",key = "#result.id()")
     @Override
     public AppServiceDto save(final AppServiceDto appServiceDTO) {
         return ServiceMapper.toDTO(serviceRepository.save(ServiceMapper.toEntity(appServiceDTO)));
