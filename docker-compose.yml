@@ -15,8 +15,12 @@ services:
       - db:/data/db
   redis:
     image: redis
+    env_file: .env
     ports:
       - "6379:6379"
+    environment:
+      - REDIS_PASSWORD = ${REDIS_PASSWORD}
+    command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
   test_runner:
     build:
       context: .
