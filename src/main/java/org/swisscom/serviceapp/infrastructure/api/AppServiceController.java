@@ -1,10 +1,11 @@
-package org.swisscom.serviceapp.api;
+package org.swisscom.serviceapp.infrastructure.api;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.swisscom.serviceapp.model.AppService;
-import org.swisscom.serviceapp.model.dto.AppServiceDTO;
-import org.swisscom.serviceapp.service.AppServiceService;
+import org.swisscom.serviceapp.domain.model.AppService;
+import org.swisscom.serviceapp.infrastructure.dto.AppServiceDTO;
+import org.swisscom.serviceapp.infrastructure.service.AppServiceService;
 
 import java.util.UUID;
 
@@ -23,12 +24,12 @@ public class AppServiceController {
     }
 
     @PostMapping
-    public ResponseEntity<AppServiceDTO> save(@RequestBody AppServiceDTO appServiceDTO) {
+    public ResponseEntity<AppServiceDTO> save(@RequestBody @Valid AppServiceDTO appServiceDTO) {
         return ResponseEntity.ok(service.save(appServiceDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AppServiceDTO> update(@PathVariable UUID id, @RequestBody AppServiceDTO appServiceDTO) {
+    public ResponseEntity<AppServiceDTO> update(@PathVariable UUID id, @RequestBody @Valid AppServiceDTO appServiceDTO) {
         return ResponseEntity.ok(service.update(id, appServiceDTO));
     }
 

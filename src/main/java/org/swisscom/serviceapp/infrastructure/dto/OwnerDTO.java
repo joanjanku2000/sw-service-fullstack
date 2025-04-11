@@ -1,21 +1,19 @@
-package org.swisscom.serviceapp.model;
-
-import java.util.UUID;
+package org.swisscom.serviceapp.infrastructure.dto;
 
 /**
- * Object stored directly into mongodb
+ * Object used only as D-T-O
  */
-public class Owner {
-    private UUID id;
+public class OwnerDTO {
+    private String id;
     private String name;
     private String accountNumber;
     private Integer level;
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -41,10 +39,5 @@ public class Owner {
 
     public void setLevel(Integer level) {
         this.level = level;
-    }
-
-    @Override
-    public String toString() {
-        return "Owner{" + "id=" + id + ", name='" + name + '\'' + ", accountNumber='" + accountNumber + '\'' + ", level=" + level + '}';
     }
 }

@@ -1,7 +1,7 @@
-package org.swisscom.serviceapp.service;
+package org.swisscom.serviceapp.infrastructure.service;
 
-import org.swisscom.serviceapp.model.AppService;
-import org.swisscom.serviceapp.model.dto.AppServiceDTO;
+import org.swisscom.serviceapp.domain.model.AppService;
+import org.swisscom.serviceapp.infrastructure.dto.AppServiceDTO;
 
 import java.util.UUID;
 

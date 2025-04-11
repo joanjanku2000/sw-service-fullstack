@@ -1,4 +1,6 @@
-package org.swisscom.serviceapp.model.dto;
+package org.swisscom.serviceapp.infrastructure.dto;
+
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 
@@ -7,6 +9,7 @@ import java.util.List;
  */
 public class ResourceDTO {
     private String id;
+    @NotNull(message = "Owners cannot be null")
     private List<OwnerDTO> owners;
 
     public String getId() {

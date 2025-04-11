@@ -13,23 +13,36 @@ services:
       - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
     volumes:
       - db:/data/db
-  app:
-    container_name: sw-service-app
-    depends_on:
-      - mongo_db
-    build: .
-    restart: on-failure
-    env_file: .env
-    ports:
-      - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+  test_runner:
+    build:
+      context: .
     environment:
-      SPRING_APPLICATION_JSON: '{
-          "spring.data.mongodb.uri" : "mongodb://$MONGODB_USER:$MONGODB_PASSWORD@mongo_db:$MONGODB_DOCKER_PORT/$MONGODB_DATABASE?authSource=admin"
-        }'
+      SPRING_PROFILES_ACTIVE: test
+      TESTCONTAINERS_HOST_OVERRIDE: host.docker.internal
     volumes:
       - .m2:/root/.m2
-    stdin_open: true
-    tty: true
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: mvn verify
+  app:
+   container_name: sw-service-app
+   depends_on:
+     - mongo_db
+   build:
+    context: .
+   restart: on-failure
+   env_file: .env
+   ports:
+     - $SPRING_LOCAL_PORT:$SPRING_DOCKER_PORT
+   environment:
+     SPRING_PROFILES_ACTIVE: dev
+     SPRING_APPLICATION_JSON: '{
+          "spring.data.mongodb.uri" : "mongodb://$MONGODB_USER:$MONGODB_PASSWORD@mongo_db:$MONGODB_DOCKER_PORT/$MONGODB_DATABASE?authSource=admin"
+      }'
+   volumes:
+     - .m2:/root/.m2
+   stdin_open: true
+   tty: true
+
 
 volumes:
   db:

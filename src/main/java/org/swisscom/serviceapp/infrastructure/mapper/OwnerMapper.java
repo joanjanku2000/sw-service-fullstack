@@ -1,7 +1,7 @@
-package org.swisscom.serviceapp.mapper;
+package org.swisscom.serviceapp.infrastructure.mapper;
 
-import org.swisscom.serviceapp.model.Owner;
-import org.swisscom.serviceapp.model.dto.OwnerDTO;
+import org.swisscom.serviceapp.domain.model.Owner;
+import org.swisscom.serviceapp.infrastructure.dto.OwnerDTO;
 
 import java.util.UUID;
 

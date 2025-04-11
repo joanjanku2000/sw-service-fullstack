@@ -1,4 +1,7 @@
-package org.swisscom.serviceapp.model.dto;
+package org.swisscom.serviceapp.infrastructure.dto;
+
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.List;
 import java.util.UUID;
@@ -8,6 +11,8 @@ import java.util.UUID;
  */
 public class AppServiceDTO {
     private UUID id;
+    @Valid
+    @NotNull(message = "Resources cannot be null")
     private List<ResourceDTO> resources;
 
     public UUID getId() {
