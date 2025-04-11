@@ -2,3 +2,10 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:123456@localhost:7017/service_db?authSource=admin
+
+logging:
+  file:
+    path: logs
+    name: logs/app-service.log
+  level:
+    com: info

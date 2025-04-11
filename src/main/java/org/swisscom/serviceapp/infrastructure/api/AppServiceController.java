@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.swisscom.serviceapp.domain.model.AppService;
+import org.swisscom.serviceapp.infrastructure.dto.AppServiceDto;
 import org.swisscom.serviceapp.infrastructure.service.AppServiceService;
 
 import java.util.UUID;
@@ -23,17 +24,17 @@ public class AppServiceController {
     }
 
     @PostMapping
-    public ResponseEntity<org.swisscom.serviceapp.infrastructure.dto.AppServiceDto> save(@RequestBody @Valid org.swisscom.serviceapp.infrastructure.dto.AppServiceDto appServiceDTO) {
+    public ResponseEntity<AppServiceDto> save(@RequestBody @Valid org.swisscom.serviceapp.infrastructure.dto.AppServiceDto appServiceDTO) {
         return ResponseEntity.ok(service.save(appServiceDTO));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<org.swisscom.serviceapp.infrastructure.dto.AppServiceDto> update(@PathVariable UUID id, @RequestBody @Valid org.swisscom.serviceapp.infrastructure.dto.AppServiceDto appServiceDTO) {
+    public ResponseEntity<AppServiceDto> update(@PathVariable UUID id, @RequestBody @Valid org.swisscom.serviceapp.infrastructure.dto.AppServiceDto appServiceDTO) {
         return ResponseEntity.ok(service.update(id, appServiceDTO));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<org.swisscom.serviceapp.infrastructure.dto.AppServiceDto> findById(@PathVariable UUID id) {
+    public ResponseEntity<AppServiceDto> findById(@PathVariable UUID id) {
         return ResponseEntity.ok(service.findById(id));
     }
 }
