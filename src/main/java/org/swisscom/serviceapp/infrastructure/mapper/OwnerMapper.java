@@ -15,7 +15,7 @@ public class OwnerMapper {
         return new OwnerDto(owner.getId().toString(), owner.getName(), owner.getAccountNumber(), owner.getLevel());
     }
 
-    public static Owner toEntity(org.swisscom.serviceapp.infrastructure.dto.OwnerDto ownerDTO) {
+    public static Owner toEntity(OwnerDto ownerDTO) {
         Owner owner = new Owner();
 
         owner.setId(UUID.randomUUID());

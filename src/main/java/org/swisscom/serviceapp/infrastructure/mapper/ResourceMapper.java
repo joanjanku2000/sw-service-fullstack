@@ -16,7 +16,7 @@ public class ResourceMapper {
                 resource.getOwners().stream().map(OwnerMapper::toDTO).toList());
     }
 
-    public static Resource toEntity(final org.swisscom.serviceapp.infrastructure.dto.ResourceDto resourceDTO) {
+    public static Resource toEntity(final ResourceDto resourceDTO) {
         Resource resource = new Resource();
 
         resource.setId(UUID.randomUUID());

@@ -15,7 +15,7 @@ public class ServiceMapper {
         return new AppServiceDto(appService.getId(), appService.getResources().stream().map(ResourceMapper::toDTO).toList());
     }
 
-    public static AppService toEntity(org.swisscom.serviceapp.infrastructure.dto.AppServiceDto appServiceDTO) {
+    public static AppService toEntity(AppServiceDto appServiceDTO) {
         AppService appService = new AppService();
 
         appService.setId(UUID.randomUUID());
@@ -25,7 +25,7 @@ public class ServiceMapper {
         return appService;
     }
 
-    public static AppService toEntityForUpdate(AppService service, org.swisscom.serviceapp.infrastructure.dto.AppServiceDto appServiceDTO) {
+    public static AppService toEntityForUpdate(AppService service, AppServiceDto appServiceDTO) {
 
         service.setResources(appServiceDTO.resources().stream().map(ResourceMapper::toEntity).toList());
 
