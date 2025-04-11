@@ -3,6 +3,7 @@ package org.swisscom.serviceapp.infrastructure.mapper;
 import org.swisscom.serviceapp.domain.model.Resource;
 import org.swisscom.serviceapp.infrastructure.dto.ResourceDto;
 
+import java.util.List;
 import java.util.UUID;
 
 public class ResourceMapper {
@@ -12,19 +13,24 @@ public class ResourceMapper {
     }
 
     public static ResourceDto toDTO(final Resource resource) {
-        return new ResourceDto(resource.getId().toString(),
-                resource.getOwners().stream().map(OwnerMapper::toDTO).toList());
+        return new ResourceDto(resource.getId().toString(), OwnerMapper.toDtoList(resource.getOwners()));
     }
 
     public static Resource toEntity(final ResourceDto resourceDTO) {
         Resource resource = new Resource();
 
         resource.setId(UUID.randomUUID());
-
-        resource.setOwners(resourceDTO.owners().stream().map(OwnerMapper::toEntity).toList());
+        resource.setOwners(OwnerMapper.toEntityList(resourceDTO.owners()));
 
         return resource;
     }
 
+    public static List<Resource> toEntityList(final List<ResourceDto> resourceDtoList) {
+        return resourceDtoList.stream().map(ResourceMapper::toEntity).toList();
+    }
+
+    public static List<ResourceDto> toDtoList(final List<Resource> resourceList) {
+        return resourceList.stream().map(ResourceMapper::toDTO).toList();
+    }
 
 }

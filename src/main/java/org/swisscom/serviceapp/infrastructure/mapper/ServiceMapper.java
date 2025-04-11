@@ -12,7 +12,7 @@ public class ServiceMapper {
     }
 
     public static AppServiceDto toDTO(AppService appService) {
-        return new AppServiceDto(appService.getId(), appService.getResources().stream().map(ResourceMapper::toDTO).toList());
+        return new AppServiceDto(appService.getId(), ResourceMapper.toDtoList(appService.getResources()));
     }
 
     public static AppService toEntity(AppServiceDto appServiceDTO) {
@@ -20,14 +20,14 @@ public class ServiceMapper {
 
         appService.setId(UUID.randomUUID());
 
-        appService.setResources(appServiceDTO.resources().stream().map(ResourceMapper::toEntity).toList());
+        appService.setResources(ResourceMapper.toEntityList(appServiceDTO.resources()));
 
         return appService;
     }
 
     public static AppService toEntityForUpdate(AppService service, AppServiceDto appServiceDTO) {
 
-        service.setResources(appServiceDTO.resources().stream().map(ResourceMapper::toEntity).toList());
+        service.setResources(ResourceMapper.toEntityList(appServiceDTO.resources()));
 
         return service;
     }
