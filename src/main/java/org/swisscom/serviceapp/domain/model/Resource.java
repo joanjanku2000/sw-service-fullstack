@@ -26,11 +26,4 @@ public class Resource {
         this.owners = owners;
     }
 
-    @Override
-    public String toString() {
-        return "Resource{" +
-                "id=" + id +
-                ", owners=" + owners +
-                '}';
-    }
 }

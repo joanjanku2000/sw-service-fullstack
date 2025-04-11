@@ -10,7 +10,7 @@ import java.util.UUID;
 /**
  * Object used only as D-T-O
  */
-public record AppServiceDto(UUID id,@Valid @NotNull(message = "Resources cannot be null") List<ResourceDto> resources)
+public record AppServiceDto(UUID id,@Valid @NotNull(message = "Resources cannot be null") List<ResourceDto> resources, Integer version)
         implements Serializable {
 
 }

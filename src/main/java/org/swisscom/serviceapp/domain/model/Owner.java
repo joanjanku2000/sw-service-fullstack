@@ -43,8 +43,4 @@ public class Owner {
         this.level = level;
     }
 
-    @Override
-    public String toString() {
-        return "Owner{" + "id=" + id + ", name='" + name + '\'' + ", accountNumber='" + accountNumber + '\'' + ", level=" + level + '}';
-    }
 }

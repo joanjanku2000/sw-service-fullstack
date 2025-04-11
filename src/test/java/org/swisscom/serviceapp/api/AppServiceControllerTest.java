@@ -8,6 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockServletContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -15,17 +16,23 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.swisscom.serviceapp.ServiceAppApplication;
 import org.swisscom.serviceapp.containers.ContainerBase;
 import org.swisscom.serviceapp.domain.model.AppService;
+import org.swisscom.serviceapp.infrastructure.api.exception.ExceptionMessage;
 import org.swisscom.serviceapp.infrastructure.dto.AppServiceDto;
 import org.swisscom.serviceapp.infrastructure.dto.OwnerDto;
 import org.swisscom.serviceapp.infrastructure.dto.ResourceDto;
+import org.swisscom.serviceapp.infrastructure.mapper.ServiceMapper;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static org.bson.assertions.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -38,6 +45,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = {ServiceAppApplication.class})
 @WebAppConfiguration
 class AppServiceControllerTest extends ContainerBase {
+    private static final int DEFAULT_VERSION = 1;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
     @Autowired
     private WebApplicationContext webApplicationContext;
     @Autowired
@@ -45,7 +54,7 @@ class AppServiceControllerTest extends ContainerBase {
     private MockMvc mockMvc;
 
     @BeforeEach
-    public void setup() throws Exception {
+    public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
     }
 
@@ -107,8 +116,9 @@ class AppServiceControllerTest extends ContainerBase {
         AppService appService = objectMapper.readValue(mvcResult.getResponse().getContentAsString()
                 ,AppService.class);
 
-        AppServiceDto toUseForUpdate = generateAppServiceDto(appService.getId(),
-               List.of(generateResourceDto(List.of(generateOwnerDto(updatedName)))));
+        appService.getResources().get(0).getOwners().get(0).setName(updatedName);
+
+        AppServiceDto toUseForUpdate = ServiceMapper.toDTO(appService);
 
         this.mockMvc.perform(put(Endpoints.UPDATE.getUri(), appService.getId())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -119,7 +129,86 @@ class AppServiceControllerTest extends ContainerBase {
     }
 
     @Test
-    void givenNotExistingService_thenUpdateSuccessful() throws Exception {
+    void givenNotMatchingVersion_thenUpdateFails() throws Exception {
+        String updatedName = "JOAN_CHANGED";
+        AppServiceDto appServiceDTO = generateAppServiceDto();
+
+        MvcResult mvcResult = this.mockMvc.perform(post(Endpoints.SAVE.getUri())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(getJson(appServiceDTO)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resources[0].owners[0].name")
+                        .value("Joan")).andReturn();
+
+        AppService appService = objectMapper.readValue(mvcResult.getResponse().getContentAsString()
+                ,AppService.class);
+
+        appService.getResources().get(0).getOwners().get(0).setName(updatedName);
+        appService.setVersion(appService.getVersion() - 1); // assuming incremented from another thread
+
+        AppServiceDto toUseForUpdate = ServiceMapper.toDTO(appService);
+
+        this.mockMvc.perform(put(Endpoints.UPDATE.getUri(), appService.getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(getJson(toUseForUpdate)))
+                .andDo(print()).andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message")
+                        .value(ExceptionMessage.CONCURRENT_MODIFICATION.getMessage()));
+    }
+
+    /**
+     * Shoots 2 identical calls one inside another thread
+     * and the othe as part of the original thread
+     */
+    @Test
+    void givenConcurrentModification_thenUpdateFails() throws Exception {
+        String updatedName = "JOAN_CHANGED";
+        AppServiceDto appServiceDTO = generateAppServiceDto();
+
+        MvcResult mvcResult = this.mockMvc.perform(post(Endpoints.SAVE.getUri())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(getJson(appServiceDTO)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resources[0].owners[0].name")
+                        .value("Joan")).andReturn();
+
+        AppService appService = objectMapper.readValue(mvcResult.getResponse().getContentAsString()
+                ,AppService.class);
+
+        appService.getResources().get(0).getOwners().get(0).setName(updatedName);
+
+        AppServiceDto toUseForUpdate = ServiceMapper.toDTO(appService);
+
+        Future<ResultActions> resultOfFirstCall = executor.submit(
+                () -> this.mockMvc.perform(put(Endpoints.UPDATE.getUri(), appService.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(getJson(toUseForUpdate)))
+                        .andDo(print())
+
+        );
+
+        Future<ResultActions> resultOfSecondCall = executor.submit(
+                () -> this.mockMvc.perform(put(Endpoints.UPDATE.getUri(), appService.getId())
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(getJson(toUseForUpdate)))
+                        .andDo(print()).andExpect(status().isBadRequest())
+                        .andExpect(jsonPath("$.message")
+                                .value(ExceptionMessage.CONCURRENT_MODIFICATION.getMessage()))
+        );
+
+        // the order of executions of the above 2 tasks depends on the free threads at the time of execution
+        // so it cannot be guaranteed
+        // what can and MUST be guaranteed is that since the 2 requests are issued at the same time
+        // with the same version , optimistic locking must kick in and 1 of the requests should fail
+        Assertions.assertTrue(resultOfSecondCall.get().andReturn().getResponse().getStatus() == HttpStatus.BAD_REQUEST.value()
+        || resultOfFirstCall.get().andReturn().getResponse().getStatus() == HttpStatus.BAD_REQUEST.value());
+
+    }
+
+    @Test
+    void givenNotExistingService_thenUpdateNotSuccessful() throws Exception {
         AppServiceDto appServiceDTO = generateAppServiceDto();
 
         this.mockMvc.perform(put(Endpoints.UPDATE.getUri(), UUID.randomUUID())
@@ -166,19 +255,15 @@ class AppServiceControllerTest extends ContainerBase {
 
         ResourceDto resourceDTO = new ResourceDto(null, List.of(ownerDTO));
 
-        return new AppServiceDto(null, List.of(resourceDTO));
+        return new AppServiceDto(null, List.of(resourceDTO),DEFAULT_VERSION);
     }
 
     static AppServiceDto generateAppServiceDto(UUID id, List<ResourceDto> resourceDtoList) {
-        return new AppServiceDto(id, resourceDtoList);
+        return new AppServiceDto(id, resourceDtoList, DEFAULT_VERSION);
     }
 
     static ResourceDto generateResourceDto(List<OwnerDto> ownerDtoList) {
         return new ResourceDto(null,ownerDtoList);
-    }
-
-    static OwnerDto generateOwnerDto(String name) {
-        return new OwnerDto(null,name, "123435634",8);
     }
 }
 

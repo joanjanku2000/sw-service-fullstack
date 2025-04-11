@@ -12,7 +12,7 @@ public class ServiceMapper {
     }
 
     public static AppServiceDto toDTO(AppService appService) {
-        return new AppServiceDto(appService.getId(), ResourceMapper.toDtoList(appService.getResources()));
+        return new AppServiceDto(appService.getId(), ResourceMapper.toDtoList(appService.getResources()), appService.getVersion());
     }
 
     public static AppService toEntity(AppServiceDto appServiceDTO) {
@@ -25,10 +25,4 @@ public class ServiceMapper {
         return appService;
     }
 
-    public static AppService toEntityForUpdate(AppService service, AppServiceDto appServiceDTO) {
-
-        service.setResources(ResourceMapper.toEntityList(appServiceDTO.resources()));
-
-        return service;
-    }
 }

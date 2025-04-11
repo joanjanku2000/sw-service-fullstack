@@ -12,6 +12,13 @@ public class AppService {
     private UUID id;
     private List<Resource> resources;
 
+    // field used for optimistic-locking to achieve thread safety
+    private Integer version;
+
+    public AppService() {
+        this.version = 1;
+    }
+
     public UUID getId() {
         return id;
     }
@@ -28,11 +35,11 @@ public class AppService {
         this.resources = resources;
     }
 
-    @Override
-    public String toString() {
-        return "AppService{" +
-                "id=" + id +
-                ", resources=" + resources +
-                '}';
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }
