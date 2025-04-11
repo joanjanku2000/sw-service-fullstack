@@ -1,7 +1,7 @@
 package org.swisscom.serviceapp.infrastructure.mapper;
 
 import org.swisscom.serviceapp.domain.model.Resource;
-import org.swisscom.serviceapp.infrastructure.dto.ResourceDTO;
+import org.swisscom.serviceapp.infrastructure.dto.ResourceDto;
 
 import java.util.UUID;
 
@@ -11,21 +11,17 @@ public class ResourceMapper {
         // not-instantiable
     }
 
-    public static ResourceDTO toDTO(final Resource resource) {
-        ResourceDTO resourceDTO = new ResourceDTO();
-
-        resourceDTO.setId(resource.getId().toString());
-        resourceDTO.setOwners(resource.getOwners().stream().map(OwnerMapper::toDTO).toList());
-
-        return resourceDTO;
+    public static ResourceDto toDTO(final Resource resource) {
+        return new ResourceDto(resource.getId().toString(),
+                resource.getOwners().stream().map(OwnerMapper::toDTO).toList());
     }
 
-    public static Resource toEntity(final ResourceDTO resourceDTO) {
+    public static Resource toEntity(final org.swisscom.serviceapp.infrastructure.dto.ResourceDto resourceDTO) {
         Resource resource = new Resource();
 
         resource.setId(UUID.randomUUID());
 
-        resource.setOwners(resourceDTO.getOwners().stream().map(OwnerMapper::toEntity).toList());
+        resource.setOwners(resourceDTO.owners().stream().map(OwnerMapper::toEntity).toList());
 
         return resource;
     }

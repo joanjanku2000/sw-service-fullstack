@@ -7,7 +7,6 @@ import org.swisscom.serviceapp.domain.model.AppService;
 import org.swisscom.serviceapp.domain.repo.AppServiceRepository;
 import org.swisscom.serviceapp.infrastructure.api.exception.ExceptionMessage;
 import org.swisscom.serviceapp.infrastructure.api.exception.NotFoundException;
-import org.swisscom.serviceapp.infrastructure.dto.AppServiceDTO;
 import org.swisscom.serviceapp.infrastructure.mapper.ServiceMapper;
 import org.swisscom.serviceapp.infrastructure.service.AppServiceService;
 
@@ -25,12 +24,12 @@ public class AppServiceServiceImpl implements AppServiceService {
     }
 
     @Override
-    public AppServiceDTO save(AppServiceDTO appServiceDTO) {
+    public org.swisscom.serviceapp.infrastructure.dto.AppServiceDto save(org.swisscom.serviceapp.infrastructure.dto.AppServiceDto appServiceDTO) {
         return ServiceMapper.toDTO(serviceRepository.save(ServiceMapper.toEntity(appServiceDTO)));
     }
 
     @Override
-    public AppServiceDTO update(UUID id, AppServiceDTO appServiceDTO) {
+    public org.swisscom.serviceapp.infrastructure.dto.AppServiceDto update(UUID id, org.swisscom.serviceapp.infrastructure.dto.AppServiceDto appServiceDTO) {
         AppService appService = serviceRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format(ExceptionMessage.NOT_FOUND.getMessage(), SERVICE_ENTITY_NAME, id)));
 
@@ -38,7 +37,7 @@ public class AppServiceServiceImpl implements AppServiceService {
     }
 
     @Override
-    public AppServiceDTO findById(UUID id) {
+    public org.swisscom.serviceapp.infrastructure.dto.AppServiceDto findById(UUID id) {
         logger.debug("Searching for service with id {}", id);
         return ServiceMapper.toDTO(serviceRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format(ExceptionMessage.NOT_FOUND.getMessage(), SERVICE_ENTITY_NAME, id))));

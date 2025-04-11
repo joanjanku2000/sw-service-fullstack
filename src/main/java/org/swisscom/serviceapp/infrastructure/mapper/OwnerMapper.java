@@ -1,7 +1,7 @@
 package org.swisscom.serviceapp.infrastructure.mapper;
 
 import org.swisscom.serviceapp.domain.model.Owner;
-import org.swisscom.serviceapp.infrastructure.dto.OwnerDTO;
+import org.swisscom.serviceapp.infrastructure.dto.OwnerDto;
 
 import java.util.UUID;
 
@@ -10,24 +10,18 @@ public class OwnerMapper {
     private OwnerMapper() {
         // not-instantiable
     }
-    public static OwnerDTO toDTO(Owner owner) {
-        OwnerDTO ownerDTO = new OwnerDTO();
 
-        ownerDTO.setId(owner.getId().toString());
-        ownerDTO.setName(owner.getName());
-        ownerDTO.setAccountNumber(owner.getAccountNumber());
-        ownerDTO.setLevel(owner.getLevel());
-
-        return ownerDTO;
+    public static OwnerDto toDTO(Owner owner) {
+        return new OwnerDto(owner.getId().toString(), owner.getName(), owner.getAccountNumber(), owner.getLevel());
     }
 
-    public static Owner toEntity(OwnerDTO ownerDTO) {
+    public static Owner toEntity(org.swisscom.serviceapp.infrastructure.dto.OwnerDto ownerDTO) {
         Owner owner = new Owner();
 
         owner.setId(UUID.randomUUID());
-        owner.setName(ownerDTO.getName());
-        owner.setAccountNumber(ownerDTO.getAccountNumber());
-        owner.setLevel(ownerDTO.getLevel());
+        owner.setName(ownerDTO.name());
+        owner.setAccountNumber(ownerDTO.accountNumber());
+        owner.setLevel(ownerDTO.level());
 
         return owner;
     }

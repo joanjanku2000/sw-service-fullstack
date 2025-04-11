@@ -20,9 +20,9 @@ import org.springframework.web.context.WebApplicationContext;
 import org.swisscom.serviceapp.ServiceAppApplication;
 import org.swisscom.serviceapp.containers.ContainerBase;
 import org.swisscom.serviceapp.domain.model.AppService;
-import org.swisscom.serviceapp.infrastructure.dto.AppServiceDTO;
-import org.swisscom.serviceapp.infrastructure.dto.OwnerDTO;
-import org.swisscom.serviceapp.infrastructure.dto.ResourceDTO;
+import org.swisscom.serviceapp.infrastructure.dto.AppServiceDto;
+import org.swisscom.serviceapp.infrastructure.dto.OwnerDto;
+import org.swisscom.serviceapp.infrastructure.dto.ResourceDto;
 
 import java.util.List;
 import java.util.UUID;
@@ -61,7 +61,7 @@ class AppServiceControllerTest extends ContainerBase {
 
     @Test
     void givenCorrectPayload_thenSaveSuccessful() throws Exception {
-        AppServiceDTO appServiceDTO = generateAppServiceDTO();
+        AppServiceDto appServiceDTO = generateAppServiceDto();
 
         this.mockMvc.perform(post(Endpoints.SAVE.getUri())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -73,8 +73,7 @@ class AppServiceControllerTest extends ContainerBase {
 
     @Test
     void givenMissingResources_thenSaveNotSuccessful() throws Exception {
-        AppServiceDTO appServiceDTO = generateAppServiceDTO();
-        appServiceDTO.setResources(null);
+        AppServiceDto appServiceDTO = generateAppServiceDto(null,null);
 
         this.mockMvc.perform(post(Endpoints.SAVE.getUri())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -84,8 +83,8 @@ class AppServiceControllerTest extends ContainerBase {
 
     @Test
     void givenMissingOwner_thenSaveNotSuccessful() throws Exception {
-        AppServiceDTO appServiceDTO = generateAppServiceDTO();
-        appServiceDTO.getResources().get(0).setOwners(null);
+        AppServiceDto appServiceDTO = generateAppServiceDto(null,
+                List.of(generateResourceDto(null)));
 
         this.mockMvc.perform(post(Endpoints.SAVE.getUri())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -96,7 +95,7 @@ class AppServiceControllerTest extends ContainerBase {
     @Test
     void givenExistingService_thenUpdateSuccessful() throws Exception {
         String updatedName = "JOAN_CHANGED";
-        AppServiceDTO appServiceDTO = generateAppServiceDTO();
+        AppServiceDto appServiceDTO = generateAppServiceDto();
 
         MvcResult mvcResult = this.mockMvc.perform(post(Endpoints.SAVE.getUri())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -109,11 +108,12 @@ class AppServiceControllerTest extends ContainerBase {
         AppService appService = objectMapper.readValue(mvcResult.getResponse().getContentAsString()
                 ,AppService.class);
 
-        appServiceDTO.getResources().get(0).getOwners().get(0).setName(updatedName);
+        AppServiceDto toUseForUpdate = generateAppServiceDto(appService.getId(),
+               List.of(generateResourceDto(List.of(generateOwnerDto(updatedName)))));
 
         this.mockMvc.perform(put(Endpoints.UPDATE.getUri(), appService.getId())
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(getJson(appServiceDTO)))
+                .content(getJson(toUseForUpdate)))
                 .andDo(print()).andExpect(status().isOk())
                 .andExpect(jsonPath("$.resources[0].owners[0].name")
                         .value(updatedName));
@@ -121,8 +121,7 @@ class AppServiceControllerTest extends ContainerBase {
 
     @Test
     void givenNotExistingService_thenUpdateSuccessful() throws Exception {
-        AppServiceDTO appServiceDTO = generateAppServiceDTO();
-
+        AppServiceDto appServiceDTO = generateAppServiceDto();
 
         this.mockMvc.perform(put(Endpoints.UPDATE.getUri(), UUID.randomUUID())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -134,19 +133,24 @@ class AppServiceControllerTest extends ContainerBase {
         return objectMapper.writeValueAsString(obj);
     }
 
-    static AppServiceDTO generateAppServiceDTO() {
-        OwnerDTO ownerDTO = new OwnerDTO();
-        ResourceDTO resourceDTO = new ResourceDTO();
-        AppServiceDTO appServiceDTO = new AppServiceDTO();
+    static AppServiceDto generateAppServiceDto() {
+        OwnerDto ownerDTO = new OwnerDto(null,"Joan", "123435634",8);
 
-        ownerDTO.setName("Joan");
-        ownerDTO.setAccountNumber("12425675454");
-        ownerDTO.setLevel(8);
+        ResourceDto resourceDTO = new ResourceDto(null, List.of(ownerDTO));
 
-        resourceDTO.setOwners(List.of(ownerDTO));
-        appServiceDTO.setResources(List.of(resourceDTO));
+        return new AppServiceDto(null, List.of(resourceDTO));
+    }
 
-        return appServiceDTO;
+    static AppServiceDto generateAppServiceDto(UUID id, List<ResourceDto> resourceDtoList) {
+        return new AppServiceDto(id, resourceDtoList);
+    }
+
+    static ResourceDto generateResourceDto(List<OwnerDto> ownerDtoList) {
+        return new ResourceDto(null,ownerDtoList);
+    }
+
+    static OwnerDto generateOwnerDto(String name) {
+        return new OwnerDto(null,name, "123435634",8);
     }
 }
 
