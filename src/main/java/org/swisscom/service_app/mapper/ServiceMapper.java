@@ -15,7 +15,7 @@ public class ServiceMapper {
     public static AppServiceDTO toDTO(AppService appService) {
         AppServiceDTO appServiceDTO = new AppServiceDTO();
 
-        appServiceDTO.setId(appService.getId().toString());
+        appServiceDTO.setId(appService.getId());
         appServiceDTO.setResources(appService.getResources().stream().map(ResourceMapper::toDTO).toList());
 
         return appServiceDTO;

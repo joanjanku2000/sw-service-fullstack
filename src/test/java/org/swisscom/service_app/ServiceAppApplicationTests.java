@@ -1,13 +1,13 @@
 package org.swisscom.service_app;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.swisscom.service_app.containers.ContainerBase;
 
-@SpringBootTest
-class ServiceAppApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+class ServiceAppApplicationTests extends ContainerBase {
+
+    @Test
+    void contextLoads() {
+    }
 
 }

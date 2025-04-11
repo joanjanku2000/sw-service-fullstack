@@ -1,19 +1,20 @@
 package org.swisscom.service_app.model.dto;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Object used only as D-T-O
  */
 public class AppServiceDTO {
-    private String id;
+    private UUID id;
     private List<ResourceDTO> resources;
 
-    public String getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
