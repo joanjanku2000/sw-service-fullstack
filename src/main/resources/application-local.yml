@@ -2,6 +2,10 @@ spring:
   data:
     mongodb:
       uri: mongodb://root:123456@localhost:7017/service_db?authSource=admin
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
+      - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
 
 logging:
   file:
@@ -9,3 +13,4 @@ logging:
     name: logs/app-service.log
   level:
     com: info
+
