@@ -29,8 +29,7 @@ import java.util.UUID;
 
 import static org.bson.assertions.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -127,6 +126,35 @@ class AppServiceControllerTest extends ContainerBase {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(getJson(appServiceDTO))).andDo(print())
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    void givenExistingService_thenItWillBeFound() throws Exception {
+        AppServiceDto appServiceDTO = generateAppServiceDto();
+
+        MvcResult mvcResult = this.mockMvc.perform(post(Endpoints.SAVE.getUri())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(getJson(appServiceDTO)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.resources[0].owners[0].name")
+                        .value("Joan")).andReturn();
+
+        AppService appService = objectMapper.readValue(mvcResult.getResponse().getContentAsString()
+                ,AppService.class);
+
+        this.mockMvc.perform(get(Endpoints.FIND_BY_ID.getUri(), appService.getId())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isOk())
+                .andExpect(jsonPath("$.resources[0].owners[0].name")
+                        .value("Joan"));
+    }
+
+    @Test
+    void givenExistingService_thenItWillNotBeFound() throws Exception {
+        this.mockMvc.perform(get(Endpoints.FIND_BY_ID.getUri(), UUID.randomUUID())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print()).andExpect(status().isNotFound());
     }
 
     <T> String getJson(T obj) throws JsonProcessingException {
