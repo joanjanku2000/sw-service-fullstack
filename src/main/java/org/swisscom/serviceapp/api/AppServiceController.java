@@ -1,10 +1,10 @@
-package org.swisscom.service_app.api;
+package org.swisscom.serviceapp.api;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.swisscom.service_app.model.AppService;
-import org.swisscom.service_app.model.dto.AppServiceDTO;
-import org.swisscom.service_app.service.AppServiceService;
+import org.swisscom.serviceapp.model.AppService;
+import org.swisscom.serviceapp.model.dto.AppServiceDTO;
+import org.swisscom.serviceapp.service.AppServiceService;
 
 import java.util.UUID;
 

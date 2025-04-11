@@ -1,4 +1,4 @@
-package org.swisscom.service_app.model.dto;
+package org.swisscom.serviceapp.model.dto;
 
 import java.util.List;
 

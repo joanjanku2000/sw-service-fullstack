@@ -1,7 +1,7 @@
-package org.swisscom.service_app.repo;
+package org.swisscom.serviceapp.repo;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.swisscom.service_app.model.AppService;
+import org.swisscom.serviceapp.model.AppService;
 
 import java.util.UUID;
 

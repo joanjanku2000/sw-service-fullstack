@@ -1,13 +1,14 @@
-package org.swisscom.service_app.service.impl;
+package org.swisscom.serviceapp.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
-import org.swisscom.service_app.mapper.ServiceMapper;
-import org.swisscom.service_app.model.AppService;
-import org.swisscom.service_app.model.dto.AppServiceDTO;
-import org.swisscom.service_app.repo.AppServiceRepository;
-import org.swisscom.service_app.service.AppServiceService;
+import org.swisscom.serviceapp.mapper.ServiceMapper;
+import org.swisscom.serviceapp.model.AppService;
+import org.swisscom.serviceapp.model.dto.AppServiceDTO;
+import org.swisscom.serviceapp.repo.AppServiceRepository;
+import org.swisscom.serviceapp.service.AppServiceService;
 
 import java.util.UUID;
 
@@ -27,6 +28,7 @@ public class AppServiceServiceImpl implements AppServiceService {
     }
 
     @Override
+    @Cacheable
     public AppServiceDTO update(UUID id, AppServiceDTO appServiceDTO) {
         AppService appService = serviceRepository.findById(id).orElseThrow(() -> new RuntimeException("TO BE REPLACED WITH CUSTOM EXCEPTION"));
 

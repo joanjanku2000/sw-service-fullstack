@@ -1,7 +1,7 @@
-package org.swisscom.service_app.api;
+package org.swisscom.serviceapp.api;
 
 import org.junit.jupiter.api.Test;
-import org.swisscom.service_app.containers.ContainerBase;
+import org.swisscom.serviceapp.containers.ContainerBase;
 
 //TODO mockmvc
 class AppServiceControllerTest extends ContainerBase {

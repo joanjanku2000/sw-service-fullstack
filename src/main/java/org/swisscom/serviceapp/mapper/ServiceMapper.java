@@ -1,7 +1,7 @@
-package org.swisscom.service_app.mapper;
+package org.swisscom.serviceapp.mapper;
 
-import org.swisscom.service_app.model.AppService;
-import org.swisscom.service_app.model.dto.AppServiceDTO;
+import org.swisscom.serviceapp.model.AppService;
+import org.swisscom.serviceapp.model.dto.AppServiceDTO;
 
 import java.util.UUID;
 import java.util.stream.Collectors;

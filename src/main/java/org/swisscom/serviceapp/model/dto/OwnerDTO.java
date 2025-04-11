@@ -1,4 +1,4 @@
-package org.swisscom.service_app.model.dto;
+package org.swisscom.serviceapp.model.dto;
 
 /**
  * Object used only as D-T-O

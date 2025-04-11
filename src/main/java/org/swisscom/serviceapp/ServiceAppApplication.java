@@ -1,4 +1,4 @@
-package org.swisscom.service_app;
+package org.swisscom.serviceapp;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

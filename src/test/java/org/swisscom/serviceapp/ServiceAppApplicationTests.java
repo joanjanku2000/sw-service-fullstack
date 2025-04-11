@@ -1,7 +1,7 @@
-package org.swisscom.service_app;
+package org.swisscom.serviceapp;
 
 import org.junit.jupiter.api.Test;
-import org.swisscom.service_app.containers.ContainerBase;
+import org.swisscom.serviceapp.containers.ContainerBase;
 
 
 class ServiceAppApplicationTests extends ContainerBase {

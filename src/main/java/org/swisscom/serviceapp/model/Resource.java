@@ -1,4 +1,4 @@
-package org.swisscom.service_app.model;
+package org.swisscom.serviceapp.model;
 
 import java.util.List;
 import java.util.UUID;

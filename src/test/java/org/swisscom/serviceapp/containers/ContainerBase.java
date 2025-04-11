@@ -1,4 +1,4 @@
-package org.swisscom.service_app.containers;
+package org.swisscom.serviceapp.containers;
 
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;

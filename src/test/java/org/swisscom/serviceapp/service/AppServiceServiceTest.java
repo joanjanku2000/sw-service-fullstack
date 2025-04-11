@@ -1,15 +1,14 @@
-package org.swisscom.service_app.service;
+package org.swisscom.serviceapp.service;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.swisscom.service_app.containers.ContainerBase;
-import org.swisscom.service_app.model.dto.AppServiceDTO;
-import org.swisscom.service_app.model.dto.OwnerDTO;
-import org.swisscom.service_app.model.dto.ResourceDTO;
+import org.swisscom.serviceapp.containers.ContainerBase;
+import org.swisscom.serviceapp.model.dto.AppServiceDTO;
+import org.swisscom.serviceapp.model.dto.OwnerDTO;
+import org.swisscom.serviceapp.model.dto.ResourceDTO;
 
-import java.util.Arrays;
 import java.util.List;
 
 class AppServiceServiceTest extends ContainerBase {
