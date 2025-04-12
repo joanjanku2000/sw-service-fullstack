@@ -19,18 +19,19 @@
 
     <div class="pagination-bar" *ngIf="appServicePage">
         <p>
-            Page {{ appServicePage.number}} of {{ appServicePage.totalPages }}
+            Page {{ appServicePage.number + 1}} of {{ appServicePage.totalPages }}
         </p>
 
         <div class="pagination-buttons" style="display: flex; justify-content: space-between;">
-            <button style="width: 40%;" class="next-btn" [disabled]="appServicePage.number + 1 >= appServicePage.totalPages"
+            <button style="width: 40%;" class="next-btn" 
+            [disabled]="appServicePage.number + 1 >= appServicePage.totalPages"
                 (click)="loadNextPage()">
                 Next
             </button>
 
             <div></div>
 
-            <button  style="width: 58%;" class="previous-btn" [disabled]="appServicePage.number - 1 < 1" (click)="loadPreviousPage()">
+            <button  style="width: 58%;" class="previous-btn" [disabled]="appServicePage.number - 1 < 0" (click)="loadPreviousPage()">
                 Previous
             </button>
         </div>

@@ -3,7 +3,7 @@ import { AppService } from '../../models/service.model';
 import { AppServiceService } from '../../services/appService.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from '../header/header.component';
+import { HeaderComponent } from '../shared/header/header.component';
 
 @Component({
   selector: 'app-app-service-details',
@@ -13,8 +13,8 @@ import { HeaderComponent } from '../header/header.component';
   styleUrl: './app-service-details.component.scss',
 
 })
-export class AppServiceDetailsComponent implements OnInit { 
-  
+export class AppServiceDetailsComponent implements OnInit {
+
   appService?: AppService;
   expandedResources: boolean[] = [];
 
@@ -22,12 +22,12 @@ export class AppServiceDetailsComponent implements OnInit {
     private appServiceService: AppServiceService) { }
 
   ngOnInit(): void {
-    console.log("INIT")
+
     const id: string = this.route.snapshot.paramMap.get('id')!;
-    console.log("ID: " + id)
-    this.appServiceService.findById(id).subscribe((data) => (this.appService = data));
-   
-    console.log("AppService: " + JSON.stringify(this.appService))
+
+    this.appServiceService.findById(id)
+      .subscribe((data) => (this.appService = data));
+
   }
 
   toggleResource(index: number): void {

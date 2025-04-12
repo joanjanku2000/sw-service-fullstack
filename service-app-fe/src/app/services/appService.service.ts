@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { AppService } from "../models/service.model";
@@ -13,8 +13,8 @@ export class AppServiceService {
 
     constructor(private http: HttpClient) {}
   
-    createAppService(appService: AppService): Observable<AppService> {
-      return this.http.post<AppService>(this.apiUrl, appService);
+    createAppService(appService: AppService): Observable<HttpResponse<AppService>>{
+      return this.http.post<HttpResponse<AppService>>(this.apiUrl, appService);
     }
   
     updateAppService(id: string, appService: AppService): Observable<AppService> {
@@ -27,6 +27,6 @@ export class AppServiceService {
     }
   
     findAll(offset:number): Observable<AppServicePage> {
-      return this.http.post<AppServicePage>(`${this.apiUrl}/all`, {"offset":offset, "pageSize":3});
+      return this.http.post<AppServicePage>(`${this.apiUrl}/all`, {"offset":offset, "pageSize":5});
     }
 }

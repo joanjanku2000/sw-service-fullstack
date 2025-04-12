@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AppServiceService } from '../../services/appService.service';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AppServicePage } from '../../models/servicePage.model';
 import { CommonModule } from '@angular/common';
-import { HeaderComponent } from '../header/header.component';
+import { HeaderComponent } from '../shared/header/header.component';
 
 @Component({
   selector: 'app-app-service-list',
@@ -21,7 +21,7 @@ export class AppServiceListComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.appServiceService.findAll(1).subscribe((data) => (this.appServicePage = data));
+    this.appServiceService.findAll(0).subscribe((data) => (this.appServicePage = data));
   }
 
   navigateToDetailsPage(id: string): void {
@@ -36,7 +36,7 @@ export class AppServiceListComponent implements OnInit {
   }
  
   loadPreviousPage() {
-    if (this.appServicePage?.number! - 1 >= 1) {
+    if (this.appServicePage?.number! - 1 >= 0) {
       const nextPage = this.appServicePage?.number! - 1;
       this.appServiceService.findAll(nextPage).subscribe((data) => (this.appServicePage = data)); // Assuming you have a paginated fetch method
     }

@@ -1,0 +1,82 @@
+<app-header></app-header>
+<div>
+    <div class="page-container">
+        <h2>Create a new service</h2>
+
+        <div class="page-actions">
+            <button class="primary-btn" (click)="submitService()">🚀 Submit Service</button>
+            <button class="secondary-btn" (click)="openResourceModal()">➕ Add Resource</button>
+        </div>
+
+        <div *ngIf="successMessageVisible" class="success-banner">
+            ✅ Service submitted successfully!
+        </div>
+        <div *ngIf="errorMessageVisible" class="success-banner">
+            🔻 Error during submission!
+        </div>
+
+
+        <div class="resource-summary" *ngIf="resources.length">
+            <h3>Added Resources:</h3>
+            <ul>
+                <li *ngFor="let res of resources; let i = index">
+                    <div class="resource-item">
+                        <span>
+                            <strong>Resource:</strong> {{ res.id }} — Owners: {{ res.owners.length }}
+                        </span>
+                        <span class="remove-resource" (click)="removeResource(i)">❌</span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+
+    <div class="modal-backdrop" *ngIf="showResourceModal">
+        <div class="modal">
+            <h3>Add Resource</h3>
+
+            <h4>Owner Details</h4>
+            <form #ownerFormRef="ngForm">
+                <div class="owner-form">
+                    <input name="name" [(ngModel)]="ownerForm.name" placeholder="Name" required #nameRef="ngModel" />
+                    <div class="field-error" *ngIf="nameRef.invalid && nameRef.touched">
+                        Name is required
+                    </div>
+
+                    <input name="accountNumber" [(ngModel)]="ownerForm.accountNumber" placeholder="Account Number"
+                        required #accountRef="ngModel" />
+                    <div class="field-error" *ngIf="accountRef.invalid && accountRef.touched">
+                        Account Number is required
+                    </div>
+
+                    <input name="level" [(ngModel)]="ownerForm.level" placeholder="Level" required
+                        #levelRef="ngModel" />
+                    <div class="field-error" *ngIf="levelRef.invalid && levelRef.touched">
+                        Level is required
+                    </div>
+                    <button (click)="addOwner()" [disabled]="ownerFormRef.invalid">Add Owner</button>
+                </div>
+                <div *ngIf="owners.length" class="owner-list">
+                    <h5>Added Owners</h5>
+                    <ul>
+                        <li *ngFor="let owner of owners; let i = index">
+                            {{ owner.name }} ({{ owner.accountNumber }}) - {{ owner.level }}
+                            <span class="remove-owner" (click)="removeOwner(i)">❌</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="modal-actions">
+                    <button (click)="submitResource()">Save Resource</button>
+                    <button (click)="closeResourceModal()">Cancel</button>
+                </div>
+            </form>
+
+
+
+        </div>
+    </div>
+
+</div>
