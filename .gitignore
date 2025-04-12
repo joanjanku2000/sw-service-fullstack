@@ -73,4 +73,5 @@ frontend-app*.tar
 # (if using Yarn, remove package-lock.json instead)
 /service-app-fe/package-lock.json
 
+/service-app-fe/.angular/cache/** 
 # End
