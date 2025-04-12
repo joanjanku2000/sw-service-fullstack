@@ -3,6 +3,7 @@ package org.swisscom.serviceapp.domain.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -14,6 +15,8 @@ public class AppService {
 
     // field used for optimistic-locking to achieve thread safety
     private Integer version;
+
+    private LocalDateTime createdDateTime;
 
     public AppService() {
         this.version = 1;
@@ -41,5 +44,13 @@ public class AppService {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public LocalDateTime getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
     }
 }

@@ -15,6 +15,5 @@ public interface AppServiceService {
     AppServiceDto save(AppServiceDto appServiceDTO);
     AppServiceDto update(UUID id, AppServiceDto appServiceDTO);
     AppServiceDto findById(UUID id);
-
     Page<AppServiceDto> findAll(PageRequest pageRequest);
 }

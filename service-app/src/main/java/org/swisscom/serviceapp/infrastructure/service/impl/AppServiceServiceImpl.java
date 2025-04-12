@@ -42,7 +42,7 @@ public class AppServiceServiceImpl implements AppServiceService {
         this.mongoTemplate = mongoTemplate;
     }
 
-    @CacheEvict("app-services")
+    @CacheEvict(value = "app-services", allEntries = true)
     @CachePut(cacheNames = "app-service", key = "#result.id()")
     @Override
     public AppServiceDto save(final AppServiceDto appServiceDTO) {
@@ -53,7 +53,7 @@ public class AppServiceServiceImpl implements AppServiceService {
      * Implements a manual optimistic locking mechanism leveraging
      * mongotemplate
      */
-    @CacheEvict("app-services")
+    @CacheEvict(value = "app-services",allEntries = true)
     @CachePut(cacheNames = "app-service", key = "#id")
     @Override
     public AppServiceDto update(final UUID id, final AppServiceDto appServiceDTO) {

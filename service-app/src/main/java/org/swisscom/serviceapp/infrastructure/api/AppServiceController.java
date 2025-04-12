@@ -3,6 +3,7 @@ package org.swisscom.serviceapp.infrastructure.api;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.swisscom.serviceapp.domain.model.AppService;
@@ -43,6 +44,6 @@ public class AppServiceController {
 
     @PostMapping("/all")
     public ResponseEntity<Page<AppServiceDto>> findAll(@RequestBody PageInput pageInput) {
-        return ResponseEntity.ok(service.findAll(PageRequest.of(pageInput.offset(),pageInput.pageSize())));
+        return ResponseEntity.ok(service.findAll(PageRequest.of(pageInput.getOffset(),pageInput.getPageSize(), Sort.by(pageInput.getSortDirectionDefault(), pageInput.getSortByDefault()))));
     }
 }
