@@ -3,8 +3,11 @@ package org.swisscom.serviceapp.infrastructure.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -39,6 +42,7 @@ public class AppServiceServiceImpl implements AppServiceService {
         this.mongoTemplate = mongoTemplate;
     }
 
+    @CacheEvict("app-services")
     @CachePut(cacheNames = "app-service", key = "#result.id()")
     @Override
     public AppServiceDto save(final AppServiceDto appServiceDTO) {
@@ -49,6 +53,7 @@ public class AppServiceServiceImpl implements AppServiceService {
      * Implements a manual optimistic locking mechanism leveraging
      * mongotemplate
      */
+    @CacheEvict("app-services")
     @CachePut(cacheNames = "app-service", key = "#id")
     @Override
     public AppServiceDto update(final UUID id, final AppServiceDto appServiceDTO) {
@@ -80,6 +85,12 @@ public class AppServiceServiceImpl implements AppServiceService {
         log.debug("Searching for service with id {}", id);
         return ServiceMapper.toDTO(serviceRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format(ExceptionMessage.NOT_FOUND.getMessage(), SERVICE_ENTITY_NAME, id))));
+    }
+
+    @Cacheable("app-services")
+    @Override
+    public Page<AppServiceDto> findAll(PageRequest pageRequest) {
+        return serviceRepository.findAll(pageRequest).map(ServiceMapper::toDTO);
     }
 
     private void ensureServiceExists(UUID id) {

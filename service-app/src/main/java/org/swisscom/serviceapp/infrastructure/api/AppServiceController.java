@@ -1,10 +1,13 @@
 package org.swisscom.serviceapp.infrastructure.api;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.swisscom.serviceapp.domain.model.AppService;
 import org.swisscom.serviceapp.infrastructure.dto.AppServiceDto;
+import org.swisscom.serviceapp.infrastructure.dto.PageInput;
 import org.swisscom.serviceapp.infrastructure.service.AppServiceService;
 
 import java.util.UUID;
@@ -36,5 +39,10 @@ public class AppServiceController {
     @GetMapping("/{id}")
     public ResponseEntity<AppServiceDto> findById(@PathVariable UUID id) {
         return ResponseEntity.ok(service.findById(id));
+    }
+
+    @PostMapping("/all")
+    public ResponseEntity<Page<AppServiceDto>> findAll(@RequestBody PageInput pageInput) {
+        return ResponseEntity.ok(service.findAll(PageRequest.of(pageInput.offset(),pageInput.pageSize())));
     }
 }
