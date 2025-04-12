@@ -1,0 +1,105 @@
+.service-container {
+    padding: 1rem;
+    max-width: 900px;
+    margin: 0 auto;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    color: #333;
+    background-color: #fafafa;
+  }
+  
+  .section-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #1976d2;
+    color: #1976d2;
+    letter-spacing: 0.5px;
+    text-align: left;  // Ensures it aligns to body content
+  }
+  
+  
+  .service {
+    border: 2px solid #2196f3;
+    border-radius: 8px;
+    padding: 1rem;
+    background-color: #e3f2fd;
+    margin-bottom: 1rem;
+  }
+  
+  .resources {
+    margin-left: 1rem;
+    padding-left: 1rem;
+    border-left: 3px solid #2196f3;
+    margin-top: 1rem;
+  }
+  
+  .resource {
+    background-color: #ffffff;
+    border: 1px solid #90caf9;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+    transition: background-color 0.3s;
+  }
+  
+  .resource:hover {
+    background-color: #f1faff;
+  }
+  
+  .owners {
+    margin-left: 1rem;
+    padding-left: 1rem;
+    border-left: 2px dashed #4caf50;
+    margin-top: 0.5rem;
+  }
+  
+  .owner {
+    background-color: #f1f8e9;
+    border: 1px solid #c8e6c9;
+    border-radius: 4px;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .toggle-btn {
+    background-color: #1976d2;
+    border: none;
+    color: white;
+    padding: 4px 10px;
+    margin-left: 1rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .toggle-btn:hover {
+    background-color: #0d47a1;
+  }
+  .pagination-bar {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem;
+    background-color: #f1f1f1;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  
+  .next-btn {
+    background-color: #1976d2;
+    border: none;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .next-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
