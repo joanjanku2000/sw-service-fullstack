@@ -3,11 +3,12 @@ import { AppService } from '../../models/service.model';
 import { AppServiceService } from '../../services/appService.service';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-app-service-details',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, HeaderComponent],
   templateUrl: './app-service-details.component.html',
   styleUrl: './app-service-details.component.scss',
 
