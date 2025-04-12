@@ -51,6 +51,18 @@ services:
    stdin_open: true
    tty: true
 
+  frontend:
+    container_name: sw-service-app-frontend
+    build:
+      context: ./service-app-fe
+    volumes:
+      - ./service-app-fe:/app
+      - /app/node_modules     
+    ports:
+      - 4200:4200
+    stdin_open: true
+    tty: true
+
 
 volumes:
   db:
