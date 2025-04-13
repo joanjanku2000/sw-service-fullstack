@@ -33,4 +33,9 @@ public class ResourceMapper {
         return resourceList.stream().map(ResourceMapper::toDTO).toList();
     }
 
+    // TODO handle separate update of Resources - adding another case - same goes for owner
+    public static List<Resource> toUpdatedEntityList(final List<ResourceDto> resourceDtoList) {
+      return resourceDtoList.stream().map(ResourceMapper::toEntity).toList();
+    }
+
 }
