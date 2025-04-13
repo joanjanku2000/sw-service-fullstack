@@ -19,6 +19,7 @@ import org.swisscom.serviceapp.domain.repo.AppServiceRepository;
 import org.swisscom.serviceapp.infrastructure.api.exception.ExceptionMessage;
 import org.swisscom.serviceapp.infrastructure.api.exception.NotFoundException;
 import org.swisscom.serviceapp.infrastructure.dto.AppServiceDto;
+import org.swisscom.serviceapp.infrastructure.mapper.ResourceMapper;
 import org.swisscom.serviceapp.infrastructure.mapper.ServiceMapper;
 import org.swisscom.serviceapp.infrastructure.service.AppServiceService;
 
@@ -65,7 +66,7 @@ public class AppServiceServiceImpl implements AppServiceService {
         );
         Update update = new Update()
                 .set(VERSION, appServiceDTO.version() + 1)
-                .set(RESOURCES, appServiceDTO.resources());
+                .set(RESOURCES, ResourceMapper.toEntityListForUpdate(appServiceDTO.resources()));
 
         FindAndModifyOptions findAndModifyOptions = new FindAndModifyOptions()
                 .returnNew(true);

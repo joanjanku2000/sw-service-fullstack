@@ -16,15 +16,32 @@ public class OwnerMapper {
         return new OwnerDto(owner.getId().toString(), owner.getName(), owner.getAccountNumber(), owner.getLevel());
     }
 
-    public static Owner toEntity(final OwnerDto ownerDTO) {
+    public static Owner toEntity(final OwnerDto ownerDto) {
         Owner owner = new Owner();
 
         owner.setId(UUID.randomUUID());
-        owner.setName(ownerDTO.name());
-        owner.setAccountNumber(ownerDTO.accountNumber());
-        owner.setLevel(ownerDTO.level());
+        owner.setName(ownerDto.name());
+        owner.setAccountNumber(ownerDto.accountNumber());
+        owner.setLevel(ownerDto.level());
 
         return owner;
+    }
+
+    public static Owner toEntityForUpdate(final OwnerDto ownerDto) {
+        Owner owner = new Owner();
+
+        owner.setId(ownerDto.id() != null && !ownerDto.id().isEmpty() ?
+                UUID.fromString(ownerDto.id()) : UUID.randomUUID());
+
+        owner.setName(ownerDto.name());
+        owner.setAccountNumber(ownerDto.accountNumber());
+        owner.setLevel(ownerDto.level());
+
+        return owner;
+    }
+
+    public static List<Owner> toEntityListForUpdate(final List<OwnerDto> ownerDtoList) {
+       return ownerDtoList.stream().map(OwnerMapper::toEntityForUpdate).toList();
     }
 
     public static List<Owner> toEntityList(final List<OwnerDto> ownerDtoList) {

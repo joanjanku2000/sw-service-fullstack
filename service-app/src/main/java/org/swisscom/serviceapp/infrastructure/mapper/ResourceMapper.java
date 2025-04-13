@@ -25,6 +25,20 @@ public class ResourceMapper {
         return resource;
     }
 
+    public static Resource toEntityForUpdate(final ResourceDto resourceDto) {
+        Resource resource = new Resource();
+
+        resource.setId(resourceDto.id() != null ? UUID.fromString(resourceDto.id()) : UUID.randomUUID());
+
+        resource.setOwners(OwnerMapper.toEntityListForUpdate(resourceDto.owners()));
+
+        return resource;
+    }
+
+    public static List<Resource> toEntityListForUpdate(final List<ResourceDto> resourceDtoList) {
+        return resourceDtoList.stream().map(ResourceMapper::toEntityForUpdate).toList();
+    }
+
     public static List<Resource> toEntityList(final List<ResourceDto> resourceDtoList) {
         return resourceDtoList.stream().map(ResourceMapper::toEntity).toList();
     }
@@ -33,7 +47,6 @@ public class ResourceMapper {
         return resourceList.stream().map(ResourceMapper::toDTO).toList();
     }
 
-    // TODO handle separate update of Resources - adding another case - same goes for owner
     public static List<Resource> toUpdatedEntityList(final List<ResourceDto> resourceDtoList) {
       return resourceDtoList.stream().map(ResourceMapper::toEntity).toList();
     }

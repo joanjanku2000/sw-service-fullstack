@@ -28,12 +28,12 @@ public class AppServiceController {
     }
 
     @PostMapping
-    public ResponseEntity<AppServiceDto> save(@RequestBody @Valid org.swisscom.serviceapp.infrastructure.dto.AppServiceDto appServiceDTO) {
+    public ResponseEntity<AppServiceDto> save(@RequestBody @Valid AppServiceDto appServiceDTO) {
         return ResponseEntity.ok(service.save(appServiceDTO));
     }
-
+    @CrossOrigin("*")
     @PutMapping("/{id}")
-    public ResponseEntity<AppServiceDto> update(@PathVariable UUID id, @RequestBody @Valid org.swisscom.serviceapp.infrastructure.dto.AppServiceDto appServiceDTO) {
+    public ResponseEntity<AppServiceDto> update(@PathVariable UUID id, @RequestBody @Valid AppServiceDto appServiceDTO) {
         return ResponseEntity.ok(service.update(id, appServiceDTO));
     }
 

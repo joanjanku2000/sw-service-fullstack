@@ -26,4 +26,9 @@ public class ServiceMapper {
         return appService;
     }
 
+    public static AppService toEntityForUpdate(AppService appService, AppServiceDto appServiceDto) {
+        appService.setResources(ResourceMapper.toEntityListForUpdate(appServiceDto.resources()));
+        return appService;
+    }
+
 }
