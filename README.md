@@ -59,13 +59,15 @@ tail -f logs/app-service.log
 Note: The application should've been started using `docker compose up --build`
 
 ## Local Project Setup
-After cloning the repository the local_setup.sh script can be ran.
-Just make sure it's executable. TO stop running containers:
+After cloning the repository the local_setup.sh script can be ran
+like this  `./local_setup.sh`
+Just make sure it's executable. To stop running containers:
 `docker stop $(docker ps -aq`
 
+## Production Deployment
 Project is deployed and can be accessed through the URL:
 ``http://62.72.33.67:4200``.
-Each push in master, activates the github workflow, which
+Each push in master, activates the Github workflow, which
 triggers the setup.sh script in the virtual machine to get the new code
 , run the tests , re-build and re-start the containers.
 
