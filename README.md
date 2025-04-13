@@ -60,7 +60,8 @@ Note: The application should've been started using `docker compose up --build`
 
 ## Local Project Setup
 After cloning the repository the local_setup.sh script can be ran.
-Just make sure it's executable.
+Just make sure it's executable. TO stop running containers:
+`docker stop $(docker ps -aq`
 
 Project is deployed and can be accessed through the URL:
 ``http://62.72.33.67:4200``.
