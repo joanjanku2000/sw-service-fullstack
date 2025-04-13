@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../shared/header/header.component';
 import { AppServiceService } from '../../services/appService.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-app-service-create',
@@ -13,10 +14,24 @@ import { AppServiceService } from '../../services/appService.service';
   styleUrl: './app-service-create.component.scss'
 })
 export class AppServiceCreateComponent implements OnInit {
+  
+  resourceId = '';
+  serviceId = '';
+  appServiceVersion?: number = -1;
+
   showResourceModal = false;
+  showUpdateOwnersModal = false;
+  resourceBeingUpdated: any = null;
+  updateResourceIndex = -1;
+
   successMessageVisible = false;
   errorMessageVisible = false;
-  resources: Resource[] = [];
+
+  newUpdateOwner = {
+    name: '',
+    accountNumber: '',
+    level: ''
+  };
 
   ownerForm: Owner = {
     id: '',
@@ -25,14 +40,76 @@ export class AppServiceCreateComponent implements OnInit {
     level: 0
   };
 
+  resources: Resource[] = [];
   owners: Owner[] = [];
 
-  resourceId = '';
 
-  constructor(private appServiceService: AppServiceService) { }
+  constructor(private appServiceService: AppServiceService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.resetForm();
+    //update
+    if (this.activatedRoute.snapshot.params['id']) {
+      this.serviceId = this.activatedRoute.snapshot.params['id'];
+      this.appServiceService.findById(this.serviceId).subscribe((data) => {
+        this.resources = data.resources;
+        this.appServiceVersion = data.version;
+      });
+    } else { // create
+      this.resetForm();
+    }
+
+  }
+
+  submitService() {
+    console.log('Submitted Service:', this.resources);
+
+    if (this.serviceId && this.serviceId !== '') {
+      this.appServiceService.updateAppService(this.serviceId, { 
+        version: this.appServiceVersion, 
+        resources: this.resources })
+
+        .subscribe({
+          next: (response) => {
+            this.successMessageVisible = true;
+            this.resources = [];
+            this.resetForm();
+
+            setTimeout(() => {
+              this.successMessageVisible = false;
+            }, 3000);
+          },
+          error: (error) => {
+            this.successMessageVisible = false;
+            this.errorMessageVisible = true
+            console.error('API Error:', error.status);
+            console.error('Message', error.message);
+          }
+        });
+    } else {
+      this.appServiceService.createAppService({ resources: this.resources })
+
+        .subscribe({
+          next: (response) => {
+
+            this.successMessageVisible = true;
+
+            this.successMessageVisible = true;
+            this.resources = [];
+            this.resetForm();
+
+            setTimeout(() => {
+              this.successMessageVisible = false;
+            }, 3000);
+          },
+          error: (error) => {
+            this.successMessageVisible = false;
+            this.errorMessageVisible = true
+            console.error('API Error:', error.status);
+            console.error('Message', error.message);
+          }
+        }
+        );
+    }
   }
 
   openResourceModal() {
@@ -61,35 +138,46 @@ export class AppServiceCreateComponent implements OnInit {
     this.closeResourceModal();
   }
 
-  submitService() {
-
-    console.log('Submitted Service:', this.resources);
-
-    this.appServiceService.createAppService({ resources: this.resources })
-
-      .subscribe({
-        next: (response) => {
-          
-          this.successMessageVisible = true;
-
-          this.successMessageVisible = true;
-          this.resources = [];
-          this.resetForm();
-
-          setTimeout(() => {
-            this.successMessageVisible = false;
-          }, 3000);
-        },
-        error: (error) => {
-          this.successMessageVisible = false;
-          this.errorMessageVisible = true
-          console.error('API Error:', error.status);
-          console.error('Message', error.message);
-        }
-      }
-      )
-
+  openUpdateOwnersModal(index: number) {
+    this.updateResourceIndex = index;
+    this.resourceBeingUpdated = {
+      ...this.resources[index],
+      owners: this.resources[index].owners.map(owner => ({ ...owner }))
+    };
+    this.newUpdateOwner = { name: '', accountNumber: '', level: '' };
+    this.showUpdateOwnersModal = true;
   }
+  
+  closeUpdateOwnersModal() {
+    this.showUpdateOwnersModal = false;
+    this.resourceBeingUpdated = null;
+    this.updateResourceIndex = -1;
+  }
+  
+  addOwnerToUpdate() {
+    if (
+      this.newUpdateOwner.name &&
+      this.newUpdateOwner.accountNumber &&
+      this.newUpdateOwner.level
+    ) {
+      this.resourceBeingUpdated.owners.push({ ...this.newUpdateOwner });
+      this.newUpdateOwner = { name: '', accountNumber: '', level: '' };
+    }
+  }
+  
+  removeOwnerFromUpdate(index: number) {
+    this.resourceBeingUpdated.owners.splice(index, 1);
+  }
+  
+  saveUpdatedOwners() {
+    if (this.updateResourceIndex > -1) {
+      this.resources[this.updateResourceIndex].owners = [
+        ...this.resourceBeingUpdated.owners
+      ];
+    }
+    this.closeUpdateOwnersModal();
+  }
+
 
   removeResource(index: number) {
     this.resources.splice(index, 1);

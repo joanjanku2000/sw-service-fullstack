@@ -7,7 +7,7 @@ const routes: Routes = [
     { path: 'services', component: AppServiceListComponent },
     { path: 'service/:id', component: AppServiceDetailsComponent },
     { path: 'create', component: AppServiceCreateComponent },
-    { path: 'update/:id', component: AppServiceListComponent },
+    { path: 'update/:id', component:  AppServiceCreateComponent},
     { path: '', redirectTo: 'services', pathMatch: 'full' }
   ];
 

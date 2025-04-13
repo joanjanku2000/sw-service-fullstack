@@ -24,7 +24,12 @@
                         <span>
                             <strong>Resource:</strong> {{ res.id }} — Owners: {{ res.owners.length }}
                         </span>
-                        <span class="remove-resource" (click)="removeResource(i)">❌</span>
+                        
+                        <span class="update-resource" (click)="openUpdateOwnersModal(i)">
+                            ✏️ Update Owners
+                          </span>
+                         <span class="remove-resource" (click)="removeResource(i)">❌</span>
+                          
                     </div>
                 </li>
             </ul>
@@ -78,5 +83,37 @@
 
         </div>
     </div>
+
+    <!-- 🔄 UPDATE OWNERS MODAL -->
+<div class="modal-backdrop" *ngIf="showUpdateOwnersModal">
+    <div class="modal">
+      <h3>Update Owners for Resource: {{ resourceBeingUpdated?.id }}</h3>
+  
+      <div class="owner-list">
+        <ul>
+          <li *ngFor="let owner of resourceBeingUpdated.owners; let i = index" class="owner-item">
+            <input [(ngModel)]="owner.name" placeholder="Name" />
+            <input [(ngModel)]="owner.accountNumber" placeholder="Account Number" />
+            <input [(ngModel)]="owner.level" placeholder="Level" />
+            <span class="remove-owner" (click)="removeOwnerFromUpdate(i)">❌</span>
+          </li>
+        </ul>
+      </div>
+  
+      <h4>Add New Owner</h4>
+      <div class="owner-form">
+        <input [(ngModel)]="newUpdateOwner.name" placeholder="Name" />
+        <input [(ngModel)]="newUpdateOwner.accountNumber" placeholder="Account Number" />
+        <input [(ngModel)]="newUpdateOwner.level" placeholder="Level" />
+        <button (click)="addOwnerToUpdate()">Add Owner</button>
+      </div>
+  
+      <div class="modal-actions">
+        <button (click)="saveUpdatedOwners()">💾 Save Changes</button>
+        <button (click)="closeUpdateOwnersModal()">✖ Cancel</button>
+      </div>
+    </div>
+  </div>
+  
 
 </div>

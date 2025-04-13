@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../../models/service.model';
 import { AppServiceService } from '../../services/appService.service';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from '../shared/header/header.component';
 
@@ -19,6 +19,7 @@ export class AppServiceDetailsComponent implements OnInit {
   expandedResources: boolean[] = [];
 
   constructor(private route: ActivatedRoute,
+    private router: Router,
     private appServiceService: AppServiceService) { }
 
   ngOnInit(): void {
@@ -32,5 +33,12 @@ export class AppServiceDetailsComponent implements OnInit {
 
   toggleResource(index: number): void {
     this.expandedResources[index] = !this.expandedResources[index];
+  }
+
+  onUpdateService(id?: string): void {
+    if (!id) {
+      return;
+    }
+    this.router.navigate(['/update', id]);
   }
 }
