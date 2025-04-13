@@ -2,4 +2,11 @@ spring:
   application:
     name: service-app
   profiles:
-    active: local
+    active: dev
+
+logging:
+  file:
+    path: logs
+    name: logs/app-service.log
+  level:
+    com: info

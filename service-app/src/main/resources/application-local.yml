@@ -7,10 +7,5 @@ spring:
       - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration
       - org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoConfiguration
 
-logging:
-  file:
-    path: logs
-    name: logs/app-service.log
-  level:
-    com: info
+
 
