@@ -1,3 +1,5 @@
 spring:
   profiles:
     active: test
+app:
+  allowed-origin: "http://localhost:9200"
