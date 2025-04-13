@@ -16,4 +16,5 @@ public interface AppServiceService {
     AppServiceDto update(UUID id, AppServiceDto appServiceDTO);
     AppServiceDto findById(UUID id);
     Page<AppServiceDto> findAll(PageRequest pageRequest);
+    void delete(UUID id);
 }

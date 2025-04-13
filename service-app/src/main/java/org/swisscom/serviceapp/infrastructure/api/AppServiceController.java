@@ -31,7 +31,7 @@ public class AppServiceController {
     public ResponseEntity<AppServiceDto> save(@RequestBody @Valid AppServiceDto appServiceDTO) {
         return ResponseEntity.ok(service.save(appServiceDTO));
     }
-    @CrossOrigin("*")
+
     @PutMapping("/{id}")
     public ResponseEntity<AppServiceDto> update(@PathVariable UUID id, @RequestBody @Valid AppServiceDto appServiceDTO) {
         return ResponseEntity.ok(service.update(id, appServiceDTO));
@@ -45,5 +45,11 @@ public class AppServiceController {
     @PostMapping("/all")
     public ResponseEntity<Page<AppServiceDto>> findAll(@RequestBody PageInput pageInput) {
         return ResponseEntity.ok(service.findAll(PageRequest.of(pageInput.getOffset(),pageInput.getPageSize(), Sort.by(pageInput.getSortDirectionDefault(), pageInput.getSortByDefault()))));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable UUID id) {
+        service.delete(id);
+        return ResponseEntity.ok().build();
     }
 }

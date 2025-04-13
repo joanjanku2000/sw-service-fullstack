@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
@@ -43,8 +44,10 @@ public class AppServiceServiceImpl implements AppServiceService {
         this.mongoTemplate = mongoTemplate;
     }
 
-    @CacheEvict(value = "app-services", allEntries = true)
-    @CachePut(cacheNames = "app-service", key = "#result.id()")
+    @Caching(
+            evict = @CacheEvict(value = "app-services", allEntries = true),
+            put = @CachePut(cacheNames = "app-service", key = "#result.id()")
+    )
     @Override
     public AppServiceDto save(final AppServiceDto appServiceDTO) {
         return ServiceMapper.toDTO(serviceRepository.save(ServiceMapper.toEntity(appServiceDTO)));
@@ -54,8 +57,11 @@ public class AppServiceServiceImpl implements AppServiceService {
      * Implements a manual optimistic locking mechanism leveraging
      * mongotemplate
      */
-    @CacheEvict(value = "app-services",allEntries = true)
-    @CachePut(cacheNames = "app-service", key = "#id")
+    @Caching(
+            put = @CachePut(cacheNames = "app-service", key = "#id"),
+            evict = @CacheEvict(value = "app-services", allEntries = true),
+            cacheable = @Cacheable(value = "app-service", key = "#id")
+    )
     @Override
     public AppServiceDto update(final UUID id, final AppServiceDto appServiceDTO) {
 
@@ -80,7 +86,7 @@ public class AppServiceServiceImpl implements AppServiceService {
         return ServiceMapper.toDTO(result);
     }
 
-    @Cacheable("app-service")
+    @Cacheable(value = "app-service", key = "#id")
     @Override
     public AppServiceDto findById(final UUID id) {
         log.debug("Searching for service with id {}", id);
@@ -92,6 +98,16 @@ public class AppServiceServiceImpl implements AppServiceService {
     @Override
     public Page<AppServiceDto> findAll(PageRequest pageRequest) {
         return serviceRepository.findAll(pageRequest).map(ServiceMapper::toDTO);
+    }
+
+    @Caching(evict = {
+            @CacheEvict(value = "app-services", allEntries = true),
+            @CacheEvict(value = "app-service", key = "#id")
+    })
+    @Override
+    public void delete(UUID id) {
+        ensureServiceExists(id);
+        serviceRepository.deleteById(id);
     }
 
     private void ensureServiceExists(UUID id) {

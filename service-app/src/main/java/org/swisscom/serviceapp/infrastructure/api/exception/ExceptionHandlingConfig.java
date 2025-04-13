@@ -20,7 +20,7 @@ public class ExceptionHandlingConfig {
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ErrorFormat handleNotFoundException(NotFoundException ex) {
-        return new ErrorFormat(HttpStatus.BAD_REQUEST.value(), ex.getMessage());
+        return new ErrorFormat(HttpStatus.NOT_FOUND.value(), ex.getMessage());
     }
 
     @ExceptionHandler(ConcurrentModificationException.class)
