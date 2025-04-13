@@ -11,7 +11,7 @@ import org.springframework.data.redis.serializer.RedisSerializationContext;
 
 import java.time.Duration;
 
-@Profile("dev")
+@Profile("prod")
 @EnableCaching
 @Configuration
 public class RedisConfig {
