@@ -13,12 +13,16 @@ services:
       - $MONGODB_LOCAL_PORT:$MONGODB_DOCKER_PORT
     volumes:
       - db:/data/db
+    networks:
+      - sw-network
   redis:
     image: redis
     env_file: .env
     ports:
       - "6379:6379"
     command: ["redis-server", "--requirepass", "${REDIS_PASSWORD}"]
+    networks:
+      - sw-network
   test_runner:
      build:
       context: ./service-app
@@ -29,6 +33,8 @@ services:
        - .m2:/root/.m2
        - /var/run/docker.sock:/var/run/docker.sock
      command: mvn verify
+     networks:
+       - sw-network
   app:
    container_name: sw-service-app
    depends_on:
@@ -48,6 +54,8 @@ services:
      - .m2:/root/.m2
    stdin_open: true
    tty: true
+   networks:
+     - sw-network
 
   frontend:
     container_name: sw-service-app-frontend
@@ -60,7 +68,12 @@ services:
       - 4200:4200
     stdin_open: true
     tty: true
+    networks:
+      - sw-network
 
+networks:
+  sw-network:
+    driver: bridge
 
 volumes:
   db:
