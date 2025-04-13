@@ -18,4 +18,4 @@ jobs:
           username: ${{ secrets.VM_USER }}
           password: Panteraroze@2000?
 #          key: ${{ secrets.VM_SSH_KEY }}
-          run: ./root/setup.sh
+        run: ./root/setup.sh
