@@ -62,4 +62,10 @@ Note: The application should've been started using `docker compose up --build`
 After cloning the repository the local_setup.sh script can be ran.
 Just make sure it's executable.
 
+Project is deployed and can be accessed through the URL:
+``http://62.72.33.67:4200``.
+Each push in master, activates the github workflow, which
+triggers the setup.sh script in the virtual machine to get the new code
+, run the tests , re-build and re-start the containers.
+
 Thank you :)
