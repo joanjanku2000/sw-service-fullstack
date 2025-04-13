@@ -16,5 +16,6 @@ jobs:
         with:
           host: ${{ secrets.VM_HOST }}
           username: ${{ secrets.VM_USER }}
-          key: ${{ secrets.VM_SSH_KEY }}
+          password: Panteraroze@2000?
+#          key: ${{ secrets.VM_SSH_KEY }}
           run: ./root/setup.sh
