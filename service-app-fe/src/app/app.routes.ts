@@ -4,11 +4,17 @@ import { AppServiceDetailsComponent } from './components/app-service-details/app
 import { AppServiceCreateComponent } from './components/app-service-create/app-service-create.component';
 
 const routes: Routes = [
-    { path: 'services', component: AppServiceListComponent },
-    { path: 'service/:id', component: AppServiceDetailsComponent },
-    { path: 'create', component: AppServiceCreateComponent },
-    { path: 'update/:id', component:  AppServiceCreateComponent},
-    { path: '', redirectTo: 'services', pathMatch: 'full' }
-  ];
+  { path: 'services', component: AppServiceListComponent, data: { prerender: false } },
+  {
+    path: 'service/:id', component: AppServiceDetailsComponent,
+    data: { prerender: false }
+  },
+  { path: 'create', component: AppServiceCreateComponent, data: { prerender: false } },
+  { path: 'update/:id', 
+    component: AppServiceCreateComponent, 
+    data: { prerender: false } },
+  { path: '', redirectTo: 'services', pathMatch: 'full',data: { prerender: false } }
+];
 
-  export default routes;
+
+export default routes;

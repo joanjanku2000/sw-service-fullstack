@@ -2,14 +2,14 @@ import { HttpClient, HttpResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { AppService } from "../models/service.model";
-import { UUID } from "crypto";
 import { AppServicePage } from "../models/servicePage.model";
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppServiceService {
-    private apiUrl = 'http://localhost:8080/v1/service';
+    private apiUrl = environment.apiUrl;
 
     constructor(private http: HttpClient) {}
   

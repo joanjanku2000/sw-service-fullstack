@@ -8,10 +8,10 @@
 
    
     <div class="update-button-bar">
-        <button class="update-btn" (click)="onUpdateService(appService?.id)">
+        <button class="update-btn" (click)="onUpdateService(appService.id)">
             ✏️ Update Service
         </button>
-        <button class="delete-btn" (click)="onDeleteService(appService?.id)">
+        <button class="delete-btn" (click)="onDeleteService(appService.id)">
             Delete Service
         </button>
     </div>
@@ -24,7 +24,7 @@
         </div>
       
     <div class="service">
-        <p><strong>ID:</strong> {{ appService?.id }}</p>
+        <p><strong>ID:</strong> {{ appService.id }}</p>
 
         <div class="resources">
             <h3>Resources</h3>
