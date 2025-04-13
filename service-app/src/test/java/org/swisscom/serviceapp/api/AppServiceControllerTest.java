@@ -163,7 +163,7 @@ class AppServiceControllerTest extends ContainerBase {
      * and the othe as part of the original thread
      */
     @Test
-    void givenConcurrentModification_thenUpdateFails() throws Exception {
+    void givenConcurrentModification_thenOneUpdateFails() throws Exception {
         String updatedName = "JOAN_CHANGED";
         AppServiceDto appServiceDTO = generateAppServiceDto();
 
