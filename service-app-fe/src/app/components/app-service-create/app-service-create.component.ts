@@ -81,6 +81,9 @@ export class AppServiceCreateComponent implements OnInit {
           error: (error) => {
             this.successMessageVisible = false;
             this.errorMessageVisible = true
+            setTimeout(() => {
+              this.errorMessageVisible = false;
+            }, 3000);
             console.error('API Error:', error.status);
             console.error('Message', error.message);
           }
@@ -104,6 +107,11 @@ export class AppServiceCreateComponent implements OnInit {
           error: (error) => {
             this.successMessageVisible = false;
             this.errorMessageVisible = true
+            console.error('API Error:', error.status);
+            console.error('Message', error.message);
+            setTimeout(() => {
+              this.errorMessageVisible = false;
+            }, 3000);
             console.error('API Error:', error.status);
             console.error('Message', error.message);
           }
