@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: mongodb://root:123456@localhost:7017/service_db?authSource=admin
+      uri: mongodb://root:123456@localhost:27017/service_db?authSource=admin
   autoconfigure:
     exclude:
       - org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration

@@ -1,0 +1,13 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY ../service-app-fe/package*.json ./
+
+RUN npm install
+
+COPY ../service-app-fe/ ./
+
+EXPOSE 4200
+
+CMD ["npm", "start"]
