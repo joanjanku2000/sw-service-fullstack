@@ -3,18 +3,18 @@
 set -e
 
 
-REPO_URL="https://github.com/joanjanku2000/sw-service-be.git"
+REPO_URL="https://github.com/joanjanku2000/sw-service-fullstack.git"
 
-if [ -d "sw-service-be" ]; then
+if [ -d "sw-service-fullstack" ]; then
   echo "Directory exists"
-  rm -rf sw-service-be
+  rm -rf sw-service-fullstack
 fi
 
 echo "Cloning repository..."
 
 git clone "$REPO_URL"
 
-cd sw-service-be
+cd sw-service-fullstack
 
 install_docker() {
   echo "Docker not found. Installing Docker..."
