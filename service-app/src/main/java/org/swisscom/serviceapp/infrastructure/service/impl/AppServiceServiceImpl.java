@@ -20,8 +20,8 @@ import org.swisscom.serviceapp.infrastructure.api.exception.ExceptionMessage;
 import org.swisscom.serviceapp.infrastructure.api.exception.NotFoundException;
 import org.swisscom.serviceapp.infrastructure.dto.AppServiceDto;
 import org.swisscom.serviceapp.infrastructure.dto.RestPage;
+import org.swisscom.serviceapp.infrastructure.mapper.AppServiceMapper;
 import org.swisscom.serviceapp.infrastructure.mapper.ResourceMapper;
-import org.swisscom.serviceapp.infrastructure.mapper.ServiceMapper;
 import org.swisscom.serviceapp.infrastructure.service.AppServiceService;
 
 import java.util.ConcurrentModificationException;
@@ -31,6 +31,11 @@ import static org.swisscom.serviceapp.infrastructure.api.exception.ExceptionMess
 
 @Service
 public class AppServiceServiceImpl implements AppServiceService {
+    // cache primarily for find-all
+    private static final String CACHE_APP_SERVICE = "app_service";
+
+    // cache primarily for find-by-id - individual documents
+    private static final String CACHE_APP_SERVICES = "app-services";
     private static final String SERVICE_ENTITY_NAME = "Service";
     private static final String ID = "_id";
     private static final String VERSION = "version";
@@ -45,12 +50,12 @@ public class AppServiceServiceImpl implements AppServiceService {
     }
 
     @Caching(
-            evict = @CacheEvict(value = "app-services", allEntries = true),
-            put = @CachePut(cacheNames = "app-service", key = "#result.id()")
+            evict = @CacheEvict(value = CACHE_APP_SERVICES, allEntries = true),
+            put = @CachePut(cacheNames = CACHE_APP_SERVICE, key = "#result.id()")
     )
     @Override
     public AppServiceDto save(final AppServiceDto appServiceDTO) {
-        return ServiceMapper.toDTO(serviceRepository.save(ServiceMapper.toEntity(appServiceDTO)));
+        return AppServiceMapper.toDTO(serviceRepository.save(AppServiceMapper.toEntity(appServiceDTO)));
     }
 
     /**
@@ -58,9 +63,9 @@ public class AppServiceServiceImpl implements AppServiceService {
      * mongotemplate
      */
     @Caching(
-            put = @CachePut(cacheNames = "app-service", key = "#id"),
-            evict = @CacheEvict(value = "app-services", allEntries = true),
-            cacheable = @Cacheable(value = "app-service", key = "#id")
+            put = @CachePut(cacheNames = CACHE_APP_SERVICE, key = "#id"),
+            evict = @CacheEvict(value = CACHE_APP_SERVICES, allEntries = true),
+            cacheable = @Cacheable(value = CACHE_APP_SERVICE, key = "#id")
     )
     @Override
     public AppServiceDto update(final UUID id, final AppServiceDto appServiceDTO) {
@@ -83,26 +88,26 @@ public class AppServiceServiceImpl implements AppServiceService {
             throw new ConcurrentModificationException(CONCURRENT_MODIFICATION.getMessage());
         }
 
-        return ServiceMapper.toDTO(result);
+        return AppServiceMapper.toDTO(result);
     }
 
-    @Cacheable(value = "app-service", key = "#id")
+    @Cacheable(value = CACHE_APP_SERVICE, key = "#id")
     @Override
     public AppServiceDto findById(final UUID id) {
         log.debug("Searching for service with id {}", id);
-        return ServiceMapper.toDTO(serviceRepository.findById(id)
+        return AppServiceMapper.toDTO(serviceRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(String.format(ExceptionMessage.NOT_FOUND.getMessage(), SERVICE_ENTITY_NAME, id))));
     }
 
-    @Cacheable("app-services")
+    @Cacheable(CACHE_APP_SERVICES)
     @Override
     public RestPage<AppServiceDto> findAll(PageRequest pageRequest) {
-        return new RestPage<>(serviceRepository.findAll(pageRequest).map(ServiceMapper::toDTO));
+        return new RestPage<>(serviceRepository.findAll(pageRequest).map(AppServiceMapper::toDTO));
     }
 
     @Caching(evict = {
-            @CacheEvict(value = "app-services", allEntries = true),
-            @CacheEvict(value = "app-service", key = "#id")
+            @CacheEvict(value = CACHE_APP_SERVICES, allEntries = true),
+            @CacheEvict(value = CACHE_APP_SERVICE, key = "#id")
     })
     @Override
     public void delete(UUID id) {

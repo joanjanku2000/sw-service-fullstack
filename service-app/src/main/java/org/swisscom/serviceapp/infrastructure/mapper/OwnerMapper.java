@@ -6,6 +6,10 @@ import org.swisscom.serviceapp.infrastructure.dto.OwnerDto;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Mapper Class for Owner to convert
+ * between object instances which are persisted and DTOs
+ */
 public class OwnerMapper {
 
     private OwnerMapper() {

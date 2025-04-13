@@ -10,6 +10,9 @@ import java.util.UUID;
 /**
  * Service interface providing
  * basic CRUD operations for {@link AppService}
+ *
+ * Extracted into an interface so Liskov's Substitution Principle can
+ * be implemented
  */
 public interface AppServiceService {
     AppServiceDto save(AppServiceDto appServiceDTO);

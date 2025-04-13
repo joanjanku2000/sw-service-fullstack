@@ -6,9 +6,13 @@ import org.swisscom.serviceapp.infrastructure.dto.AppServiceDto;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-public class ServiceMapper {
+/**
+ * Mapper Class for AppService to convert
+ * between object instances which are persisted and DTOs
+ */
+public class AppServiceMapper {
 
-    private ServiceMapper() {
+    private AppServiceMapper() {
         // not-instantiable
     }
 

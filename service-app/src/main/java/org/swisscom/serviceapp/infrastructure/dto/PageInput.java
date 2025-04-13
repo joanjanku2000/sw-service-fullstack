@@ -8,8 +8,8 @@ import org.springframework.data.domain.Sort;
 public class PageInput{
     private Integer offset;
     private Integer pageSize;
-    private final String sortByDefault = "createdDateTime";
-    private final Sort.Direction sortDirectionDefault = Sort.Direction.DESC;
+    private static final String SORT_BY_DEFAULT = "createdDateTime";
+    private static final Sort.Direction SORT_DIRECTION_DEFAULT = Sort.Direction.DESC;
 
     public Integer getOffset() {
         return offset;
@@ -28,10 +28,10 @@ public class PageInput{
     }
 
     public String getSortByDefault() {
-        return sortByDefault;
+        return SORT_BY_DEFAULT;
     }
 
     public Sort.Direction getSortDirectionDefault() {
-        return sortDirectionDefault;
+        return SORT_DIRECTION_DEFAULT;
     }
 }

@@ -10,6 +10,11 @@ import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 
+/**
+ * Rest Page used to provide a wrapper around page implementation.
+ * It is used to allow de/serialization to ensure Redis Compatibility
+ * @param <T>
+ */
 @JsonIgnoreProperties(ignoreUnknown = true, value = {"pageable"})
 public class RestPage<T> extends PageImpl<T> {
     @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)

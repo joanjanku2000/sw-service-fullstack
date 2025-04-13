@@ -1,5 +1,6 @@
 package org.swisscom.serviceapp.infrastructure.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -7,15 +8,19 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class CorsConfiguration {
+    private static final String[] ALLOWED_METHODS = {"HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"};
+    private static final String PATTERN = "/**";
+    @Value("${app.allowed-origin}")
+    private String allowedOrigin;
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedMethods("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
-                        .allowedOrigins("http://localhost:4200", "http://62.72.33.67:4200");
+                registry.addMapping(PATTERN)
+                        .allowedMethods(ALLOWED_METHODS)
+                        .allowedOrigins(allowedOrigin);
             }
         };
     }

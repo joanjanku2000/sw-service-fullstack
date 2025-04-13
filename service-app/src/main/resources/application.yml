@@ -2,7 +2,7 @@ spring:
   application:
     name: service-app
   profiles:
-    active: dev
+    active: local
 
 logging:
   file:

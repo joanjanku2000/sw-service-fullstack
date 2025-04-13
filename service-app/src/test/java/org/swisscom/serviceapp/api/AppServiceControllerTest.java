@@ -26,7 +26,7 @@ import org.swisscom.serviceapp.infrastructure.api.exception.ExceptionMessage;
 import org.swisscom.serviceapp.infrastructure.dto.AppServiceDto;
 import org.swisscom.serviceapp.infrastructure.dto.OwnerDto;
 import org.swisscom.serviceapp.infrastructure.dto.ResourceDto;
-import org.swisscom.serviceapp.infrastructure.mapper.ServiceMapper;
+import org.swisscom.serviceapp.infrastructure.mapper.AppServiceMapper;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -119,7 +119,7 @@ class AppServiceControllerTest extends ContainerBase {
 
         appService.getResources().get(0).getOwners().get(0).setName(updatedName);
 
-        AppServiceDto toUseForUpdate = ServiceMapper.toDTO(appService);
+        AppServiceDto toUseForUpdate = AppServiceMapper.toDTO(appService);
 
         this.mockMvc.perform(put(Endpoints.UPDATE.getUri(), appService.getId())
                 .contentType(MediaType.APPLICATION_JSON)
@@ -148,7 +148,7 @@ class AppServiceControllerTest extends ContainerBase {
         appService.getResources().get(0).getOwners().get(0).setName(updatedName);
         appService.setVersion(appService.getVersion() - 1); // assuming incremented from another thread
 
-        AppServiceDto toUseForUpdate = ServiceMapper.toDTO(appService);
+        AppServiceDto toUseForUpdate = AppServiceMapper.toDTO(appService);
 
         this.mockMvc.perform(put(Endpoints.UPDATE.getUri(), appService.getId())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -180,7 +180,7 @@ class AppServiceControllerTest extends ContainerBase {
 
         appService.getResources().get(0).getOwners().get(0).setName(updatedName);
 
-        AppServiceDto toUseForUpdate = ServiceMapper.toDTO(appService);
+        AppServiceDto toUseForUpdate = AppServiceMapper.toDTO(appService);
 
         Future<ResultActions> resultOfFirstCall = executor.submit(
                 () -> this.mockMvc.perform(put(Endpoints.UPDATE.getUri(), appService.getId())

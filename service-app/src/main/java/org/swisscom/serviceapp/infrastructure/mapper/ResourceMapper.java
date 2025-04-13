@@ -5,7 +5,10 @@ import org.swisscom.serviceapp.infrastructure.dto.ResourceDto;
 
 import java.util.List;
 import java.util.UUID;
-
+/**
+ * Mapper Class for Resource to convert
+ * between object instances which are persisted and DTOs
+ */
 public class ResourceMapper {
 
     private ResourceMapper() {
@@ -45,10 +48,6 @@ public class ResourceMapper {
 
     public static List<ResourceDto> toDtoList(final List<Resource> resourceList) {
         return resourceList.stream().map(ResourceMapper::toDTO).toList();
-    }
-
-    public static List<Resource> toUpdatedEntityList(final List<ResourceDto> resourceDtoList) {
-      return resourceDtoList.stream().map(ResourceMapper::toEntity).toList();
     }
 
 }

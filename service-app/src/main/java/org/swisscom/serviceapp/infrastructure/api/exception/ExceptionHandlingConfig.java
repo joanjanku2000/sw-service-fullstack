@@ -8,13 +8,17 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.ConcurrentModificationException;
 
+/**
+ * RestControllerAdvice for providing a global error handler for the spring
+ * boot web application
+ */
 @RestControllerAdvice
 public class ExceptionHandlingConfig {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorFormat handleMethodArgumentNotValidExceptions(MethodArgumentNotValidException ex) {
-        return new ErrorFormat(HttpStatus.BAD_REQUEST.value(), ex.getFieldError() != null ? ex.getFieldError().getDefaultMessage() : "Generic error");
+        return new ErrorFormat(HttpStatus.BAD_REQUEST.value(), ex != null && ex.getFieldError() != null ? ex.getFieldError().getDefaultMessage() : "Generic error");
     }
 
     @ExceptionHandler(NotFoundException.class)
