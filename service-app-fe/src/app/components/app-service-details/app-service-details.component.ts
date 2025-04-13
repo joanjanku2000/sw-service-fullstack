@@ -35,14 +35,8 @@ export class AppServiceDetailsComponent implements OnInit {
         {
           next: (data) => (this.appService = data),
           error: (error) => {
-            this.notFoundErrorMessage = true
-            console.error('API Error:', error.status);
-            console.error('Message', error.message);
-            setTimeout(() => {
-              this.notFoundErrorMessage = false;
-              this.router.navigate(['/services']);
-            }, 3000);
-          } 
+            this.handleNotFoundError(error);
+          }
         }
       );
 
@@ -64,26 +58,51 @@ export class AppServiceDetailsComponent implements OnInit {
       return;
     }
     this.appServiceService.delete(id)
-    .subscribe(
-      {
-        next: (response) => {
-          this.successMessageVisible = true;
-          setTimeout(() => {
-            
-            this.router.navigate(['/services']);
-          }, 3000);
-        },
-        error: (error) => {
-          this.errorMessageVisible = true
-          console.error('API Error:', error.status);
-          console.error('Message', error.message);
-          setTimeout(() => {
-            this.errorMessageVisible = false;
-          }, 3000);
-          console.error('API Error:', error.status);
-          console.error('Message', error.message);
+      .subscribe(
+        {
+          next: (response) => {
+            this.handleSuccess();
+          },
+          error: (error) => {
+            this.handleError(error);
+          }
         }
-      }
-    )  
+      )
+  }
+
+  private handleSuccess() {
+    this.successMessageVisible = true;
+    setTimeout(() => {
+
+      this.router.navigate(['/services']);
+    }, 3000);
+  }
+
+  private handleError(error: any) {
+    this.errorMessageVisible = true;
+    this.logError(error);
+    
+    setTimeout(() => {
+      this.errorMessageVisible = false;
+    }, 3000);
+
+    this.logError(error);
+  }
+
+
+  private logError(error: any) {
+    console.error('API Error:', error.status);
+    console.error('Message', error.message);
+  }
+
+  private handleNotFoundError(error: any) {
+    this.notFoundErrorMessage = true;
+    this.logError(error);
+
+    setTimeout(() => {
+      this.notFoundErrorMessage = false;
+      this.router.navigate(['/services']);
+    }, 3000);
+    
   }
 }

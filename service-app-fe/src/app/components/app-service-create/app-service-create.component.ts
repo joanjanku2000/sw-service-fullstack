@@ -14,7 +14,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './app-service-create.component.scss'
 })
 export class AppServiceCreateComponent implements OnInit {
-  
+
   resourceId = '';
   serviceId = '';
   appServiceVersion?: number = -1;
@@ -27,7 +27,7 @@ export class AppServiceCreateComponent implements OnInit {
   successMessageVisible = false;
   errorMessageVisible = false;
 
-  newUpdateOwner = {
+  newUpdatedOwner = {
     name: '',
     accountNumber: '',
     level: ''
@@ -61,31 +61,19 @@ export class AppServiceCreateComponent implements OnInit {
   }
 
   submitService() {
-    console.log('Submitted Service:', this.resources);
-
     if (this.serviceId && this.serviceId !== '') {
-      this.appServiceService.updateAppService(this.serviceId, { 
-        version: this.appServiceVersion, 
-        resources: this.resources })
-
+      this.appServiceService.updateAppService(this.serviceId,
+        {
+          version: this.appServiceVersion,
+          resources: this.resources
+        }
+      )
         .subscribe({
           next: (response) => {
-            this.successMessageVisible = true;
-            this.resources = [];
-            this.resetForm();
-
-            setTimeout(() => {
-              this.successMessageVisible = false;
-            }, 3000);
+            this.handleSubmitSuccess();
           },
           error: (error) => {
-            this.successMessageVisible = false;
-            this.errorMessageVisible = true
-            setTimeout(() => {
-              this.errorMessageVisible = false;
-            }, 3000);
-            console.error('API Error:', error.status);
-            console.error('Message', error.message);
+            this.handleSubmitError(error);
           }
         });
     } else {
@@ -93,27 +81,10 @@ export class AppServiceCreateComponent implements OnInit {
 
         .subscribe({
           next: (response) => {
-
-            this.successMessageVisible = true;
-
-            this.successMessageVisible = true;
-            this.resources = [];
-            this.resetForm();
-
-            setTimeout(() => {
-              this.successMessageVisible = false;
-            }, 3000);
+            this.handleSubmitSuccess();
           },
           error: (error) => {
-            this.successMessageVisible = false;
-            this.errorMessageVisible = true
-            console.error('API Error:', error.status);
-            console.error('Message', error.message);
-            setTimeout(() => {
-              this.errorMessageVisible = false;
-            }, 3000);
-            console.error('API Error:', error.status);
-            console.error('Message', error.message);
+            this.handleSubmitError(error);
           }
         }
         );
@@ -152,31 +123,31 @@ export class AppServiceCreateComponent implements OnInit {
       ...this.resources[index],
       owners: this.resources[index].owners.map(owner => ({ ...owner }))
     };
-    this.newUpdateOwner = { name: '', accountNumber: '', level: '' };
+    this.newUpdatedOwner = { name: '', accountNumber: '', level: '' };
     this.showUpdateOwnersModal = true;
   }
-  
+
   closeUpdateOwnersModal() {
     this.showUpdateOwnersModal = false;
     this.resourceBeingUpdated = null;
     this.updateResourceIndex = -1;
   }
-  
+
   addOwnerToUpdate() {
     if (
-      this.newUpdateOwner.name &&
-      this.newUpdateOwner.accountNumber &&
-      this.newUpdateOwner.level
+      this.newUpdatedOwner.name &&
+      this.newUpdatedOwner.accountNumber &&
+      this.newUpdatedOwner.level
     ) {
-      this.resourceBeingUpdated.owners.push({ ...this.newUpdateOwner });
-      this.newUpdateOwner = { name: '', accountNumber: '', level: '' };
+      this.resourceBeingUpdated.owners.push({ ...this.newUpdatedOwner });
+      this.newUpdatedOwner = { name: '', accountNumber: '', level: '' };
     }
   }
-  
+
   removeOwnerFromUpdate(index: number) {
     this.resourceBeingUpdated.owners.splice(index, 1);
   }
-  
+
   saveUpdatedOwners() {
     if (this.updateResourceIndex > -1) {
       this.resources[this.updateResourceIndex].owners = [
@@ -196,6 +167,26 @@ export class AppServiceCreateComponent implements OnInit {
     this.ownerForm = { id: '', name: '', accountNumber: '', level: 0 };
     this.owners = [];
     this.resourceId = '';
+  }
+
+  private handleSubmitError(error: any) {
+    this.successMessageVisible = false;
+    this.errorMessageVisible = true;
+    setTimeout(() => {
+      this.errorMessageVisible = false;
+    }, 3000);
+    console.error('API Error:', error.status);
+    console.error('Message', error.message);
+  }
+
+  private handleSubmitSuccess() {
+    this.successMessageVisible = true;
+    this.resources = [];
+    this.resetForm();
+
+    setTimeout(() => {
+      this.successMessageVisible = false;
+    }, 3000);
   }
 
 }

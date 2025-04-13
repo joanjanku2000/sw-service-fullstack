@@ -9,8 +9,9 @@ import { environment } from "../../environments/environment";
   providedIn: 'root'
 })
 export class AppServiceService {
-    private apiUrl = environment.apiUrl;
-
+    private apiUrl = environment.apiUrl + '/v1/service';
+    private defaultPageSize = 5;
+   
     constructor(private http: HttpClient) {}
   
     createAppService(appService: AppService): Observable<HttpResponse<AppService>>{
@@ -22,12 +23,11 @@ export class AppServiceService {
     }
   
     findById(id: string): Observable<AppService> {
-        console.log("ID: " + id)
       return this.http.get<AppService>(`${this.apiUrl}/${id}`);
     }
   
     findAll(offset:number): Observable<AppServicePage> {
-      return this.http.post<AppServicePage>(`${this.apiUrl}/all`, {"offset":offset, "pageSize":5});
+      return this.http.post<AppServicePage>(`${this.apiUrl}/all`, {"offset":offset, "pageSize":this.defaultPageSize});
     }
 
     delete(id: string): Observable<HttpResponse<any>> {
