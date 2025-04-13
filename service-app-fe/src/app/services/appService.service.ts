@@ -29,4 +29,8 @@ export class AppServiceService {
     findAll(offset:number): Observable<AppServicePage> {
       return this.http.post<AppServicePage>(`${this.apiUrl}/all`, {"offset":offset, "pageSize":5});
     }
+
+    delete(id: string): Observable<HttpResponse<any>> {
+      return this.http.delete<HttpResponse<any>>(`${this.apiUrl}/${id}`);
+    }
 }

@@ -39,6 +39,22 @@
   .update-btn:hover {
     background-color: #fb8c00;
   }
+
+  .delete-btn {
+    background-color: #fd2e2e;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 500;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .delete-btn:hover {
+    background-color: #fb8c00;
+  }
   
   
   .service {

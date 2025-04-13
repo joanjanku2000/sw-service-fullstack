@@ -1,12 +1,28 @@
 <app-header></app-header>
+<div *ngIf="notFoundErrorMessage" class="success-banner">
+    🔻 Service NOT FOUND
+</div>
+
 <div class="service-container" *ngIf="appService">
     <h2 class="section-title">Service Details</h2>
 
+   
     <div class="update-button-bar">
         <button class="update-btn" (click)="onUpdateService(appService?.id)">
             ✏️ Update Service
         </button>
+        <button class="delete-btn" (click)="onDeleteService(appService?.id)">
+            Delete Service
+        </button>
     </div>
+
+       <div *ngIf="successMessageVisible" class="success-banner">
+            ✅ Service deleted successfully!
+        </div>
+        <div *ngIf="errorMessageVisible" class="success-banner">
+            🔻 Error during deletion!
+        </div>
+      
     <div class="service">
         <p><strong>ID:</strong> {{ appService?.id }}</p>
 
