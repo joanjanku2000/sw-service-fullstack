@@ -1,7 +1,9 @@
 package org.swisscom.serviceapp.infrastructure.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
@@ -18,7 +20,10 @@ import java.util.UUID;
 public record AppServiceDto(UUID id,
                             @Valid @NotNull(message = "Resources cannot be null") @NotEmpty(message = "Resources cannot be empty") List<ResourceDto> resources,
                             Integer version,
-                            @JsonSerialize(using = LocalDateTimeSerializer.class) @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime createdDateTime)
+                            @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+                            @JsonSerialize(using = LocalDateTimeSerializer.class)
+                            @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+                            LocalDateTime createdDateTime)
         implements Serializable {
 
 }

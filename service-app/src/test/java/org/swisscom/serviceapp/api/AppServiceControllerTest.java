@@ -28,6 +28,7 @@ import org.swisscom.serviceapp.infrastructure.dto.OwnerDto;
 import org.swisscom.serviceapp.infrastructure.dto.ResourceDto;
 import org.swisscom.serviceapp.infrastructure.mapper.ServiceMapper;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -240,7 +241,7 @@ class AppServiceControllerTest extends ContainerBase {
     }
 
     @Test
-    void givenExistingService_thenItWillNotBeFound() throws Exception {
+    void givenNotExistingService_thenItWillNotBeFound() throws Exception {
         this.mockMvc.perform(get(Endpoints.FIND_BY_ID.getUri(), UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print()).andExpect(status().isNotFound());
@@ -255,11 +256,11 @@ class AppServiceControllerTest extends ContainerBase {
 
         ResourceDto resourceDTO = new ResourceDto(null, List.of(ownerDTO));
 
-        return new AppServiceDto(null, List.of(resourceDTO),DEFAULT_VERSION);
+        return new AppServiceDto(null, List.of(resourceDTO),DEFAULT_VERSION, LocalDateTime.now());
     }
 
     static AppServiceDto generateAppServiceDto(UUID id, List<ResourceDto> resourceDtoList) {
-        return new AppServiceDto(id, resourceDtoList, DEFAULT_VERSION);
+        return new AppServiceDto(id, resourceDtoList, DEFAULT_VERSION, LocalDateTime.now());
     }
 
     static ResourceDto generateResourceDto(List<OwnerDto> ownerDtoList) {
