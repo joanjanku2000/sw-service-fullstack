@@ -7,7 +7,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.core.FindAndModifyOptions;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -20,6 +19,7 @@ import org.swisscom.serviceapp.domain.repo.AppServiceRepository;
 import org.swisscom.serviceapp.infrastructure.api.exception.ExceptionMessage;
 import org.swisscom.serviceapp.infrastructure.api.exception.NotFoundException;
 import org.swisscom.serviceapp.infrastructure.dto.AppServiceDto;
+import org.swisscom.serviceapp.infrastructure.dto.RestPage;
 import org.swisscom.serviceapp.infrastructure.mapper.ResourceMapper;
 import org.swisscom.serviceapp.infrastructure.mapper.ServiceMapper;
 import org.swisscom.serviceapp.infrastructure.service.AppServiceService;
@@ -96,8 +96,8 @@ public class AppServiceServiceImpl implements AppServiceService {
 
     @Cacheable("app-services")
     @Override
-    public Page<AppServiceDto> findAll(PageRequest pageRequest) {
-        return serviceRepository.findAll(pageRequest).map(ServiceMapper::toDTO);
+    public RestPage<AppServiceDto> findAll(PageRequest pageRequest) {
+        return new RestPage<>(serviceRepository.findAll(pageRequest).map(ServiceMapper::toDTO));
     }
 
     @Caching(evict = {

@@ -1,9 +1,9 @@
 package org.swisscom.serviceapp.infrastructure.service;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.swisscom.serviceapp.domain.model.AppService;
 import org.swisscom.serviceapp.infrastructure.dto.AppServiceDto;
+import org.swisscom.serviceapp.infrastructure.dto.RestPage;
 
 import java.util.UUID;
 
@@ -15,6 +15,6 @@ public interface AppServiceService {
     AppServiceDto save(AppServiceDto appServiceDTO);
     AppServiceDto update(UUID id, AppServiceDto appServiceDTO);
     AppServiceDto findById(UUID id);
-    Page<AppServiceDto> findAll(PageRequest pageRequest);
+    RestPage<AppServiceDto> findAll(PageRequest pageRequest);
     void delete(UUID id);
 }
