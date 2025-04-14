@@ -14,7 +14,7 @@ RUN npm install -g http-server
 
 COPY --from=build /app/dist/frontend-app/browser .
 
-EXPOSE 80
+EXPOSE 4200
 
 
-CMD ["http-server", "-p", "80"]
+CMD ["http-server", "-p", "4200"]
