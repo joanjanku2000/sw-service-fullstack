@@ -19,6 +19,12 @@ and redis for dev profile)
 The service-app folder contains the back-end repo, 
 while the service-app-fe contains angular project.
 
+## Local Project Setup
+After cloning the repository the local_setup.sh script can be ran
+like this  `./local_setup.sh`
+Just make sure it's executable. To stop running containers:
+`docker stop $(docker ps -aq`
+
 ## Project Deployment
 
 The project is containerized using Docker. Back-end, front-end, mongo
@@ -26,11 +32,11 @@ and redis are all run through docker.
 After cloning the repository and making sure docker is installed
 in the machine the project can be ran using the command
 ``docker compose up --build``
-The default profile when the back-end is run through docker is dev.
+The default profile when the back-end is run through docker compose is dev.
 
 Inside the repo can be found also a "script.sh" which can be
 used as a standalone script (without cloning the repo yourself)
-and is used in Hostinger VPS to trigger the deployment. The script does everything itself as follows:
+and is used in Hostinger Ubunut Host to trigger the deployment. The script does everything itself as follows:
 
 - Checks for the repository folder in the folder it is run, if found deletes it - to ensure code is uddated
 - clones the repository and cd inside it
@@ -40,7 +46,7 @@ and is used in Hostinger VPS to trigger the deployment. The script does everythi
 In a linux enviromment the script can be made executable using  `chmod +x setup.sh`.
 (in a real world VM the chmod should specify the user for which the script is executable)
 
-Github Actions is used to trigger a workflow, which is defined inside .github/workflows/deploy/yml.
+Github Actions is used to trigger a workflow, which is defined inside  `.github/workflows/deploy/yml`.
 The workflow is triggered on each push and using the HOST, USER and SSH_KEY inside
 the configured VM (they are stored as secrets in github secrets section), it executes
 the script.sh which is found in the host machine. 
@@ -58,11 +64,6 @@ tail -f logs/app-service.log
 </pre>
 Note: The application should've been started using `docker compose up --build`
 
-## Local Project Setup
-After cloning the repository the local_setup.sh script can be ran
-like this  `./local_setup.sh`
-Just make sure it's executable. To stop running containers:
-`docker stop $(docker ps -aq`
 
 ## Production Deployment
 Project is deployed and can be accessed through the URL:
